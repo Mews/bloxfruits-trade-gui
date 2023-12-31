@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+from datetime import datetime
 
 restockHours = [4,8,12,16,20,0]
 URL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22"
