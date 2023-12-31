@@ -18,7 +18,7 @@ def listToString(list):
 
     return string
 
-def getFruitName(fruitText):
+def getFruitNameFromText(fruitText):
     fruitTextList = list(fruitText)
     splitIndexes = list()
     splitTextList = list()
@@ -33,7 +33,7 @@ def getFruitName(fruitText):
 
     return listToString(splitTextList).lower()
 
-def getFruitValue(fruitText):
+def getFruitValueFromText(fruitText):
     fruitTextList = list(fruitText)
     splitTextList = list()
     
@@ -59,18 +59,18 @@ def downloadFruitValues():
         if url == "https://www.bloxfruitsvalues.com/gamepass":
             for div in DIVS:
                 fruitNameDiv = div.find("div", {"class": "flex flex-row justify-between items-start"})
-                fruitName = getFruitName(fruitNameDiv.get_text())
+                fruitName = getFruitNameFromText(fruitNameDiv.get_text())
                 fruitValueDiv = div.find("div", {"class": "text-sm font-medium text-[#f2f2f2] mt-px"})
-                fruitValue = getFruitValue(fruitValueDiv.get_text())
+                fruitValue = getFruitValueFromText(fruitValueDiv.get_text())
 
                 values[fruitName] = fruitValue
 
         else:
             for div in DIVS:
                 fruitNameDiv = div.find("div", {"class": "relative flex flex-col justify-end ml-px pt-2 gap-1 items-end cursor-pointer"})
-                fruitName = getFruitName(fruitNameDiv.get_text())
+                fruitName = getFruitNameFromText(fruitNameDiv.get_text())
                 fruitValueDiv = div.find("div", {"class": "text-sm font-medium text-[#f2f2f2] mt-px"})
-                fruitValue = getFruitValue(fruitValueDiv.get_text())
+                fruitValue = getFruitValueFromText(fruitValueDiv.get_text())
 
                 values[fruitName] = fruitValue
 
@@ -87,3 +87,5 @@ def readFruitValues(fileDir = FILEDIR):
 def getFruitValue(fruitName, fileDir = FILEDIR):
     with open(fileDir) as f:
         return json.loads(f.read())[fruitName.lower()]
+    
+saveFruitValues()
