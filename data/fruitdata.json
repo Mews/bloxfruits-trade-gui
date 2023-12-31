@@ -1,0 +1,324 @@
+{
+  "rocket": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 5000,
+    "robux": 50,
+    "awakening": "None"
+  },
+  "spin": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 7500,
+    "robux": 75,
+    "awakening": "None"
+  },
+  "chop": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 30000,
+    "robux": 100,
+    "awakening": "None"
+  },
+  "spring": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 60000,
+    "robux": 180,
+    "awakening": "None"
+  },
+  "bomb": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 80000,
+    "robux": 220,
+    "awakening": "None"
+  },
+  "smoke": {
+    "rarity": "common",
+    "type": "elemental",
+    "price": 100000,
+    "robux": 250,
+    "awakening": "None"
+  },
+  "spike": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 180000,
+    "robux": 380,
+    "awakening": "None"
+  },
+  "flame": {
+    "rarity": "uncommon",
+    "type": "elemental",
+    "price": 250000,
+    "robux": 550,
+    "awakening": 14500
+  },
+  "falcon": {
+    "rarity": "uncommon",
+    "type": "beast",
+    "price": 300000,
+    "robux": 650,
+    "awakening": "None"
+  },
+  "ice": {
+    "rarity": "uncommon",
+    "type": "elemental",
+    "price": 350000,
+    "robux": 750,
+    "awakening": 14500
+  },
+  "sand": {
+    "rarity": "uncommon",
+    "type": "elemental",
+    "price": 420000,
+    "robux": 850,
+    "awakening": 14500
+  },
+  "dark": {
+    "rarity": "uncommon",
+    "type": "elemental",
+    "price": 500000,
+    "robux": 950,
+    "awakening": 14500
+  },
+  "diamond": {
+    "rarity": "uncommon",
+    "type": "natural",
+    "price": 600000,
+    "robux": 1000,
+    "awakening": "None"
+  },
+  "light": {
+    "rarity": "rare",
+    "type": "elemental",
+    "price": 650000,
+    "robux": 1100,
+    "awakening": 14500
+  },
+  "rubber": {
+    "rarity": "rare",
+    "type": "natural",
+    "price": 750000,
+    "robux": 1200,
+    "awakening": "None"
+  },
+  "barrier": {
+    "rarity": "rare",
+    "type": "natural",
+    "price": 800000,
+    "robux": 1250,
+    "awakening": "None"
+  },
+  "ghost": {
+    "rarity": "rare",
+    "type": "natural",
+    "price": 940000,
+    "robux": 1275,
+    "awakening": "None"
+  },
+  "magma": {
+    "rarity": "rare",
+    "type": "elemental",
+    "price": 960000,
+    "robux": 1300,
+    "awakening": 14500
+  },
+  "quake": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 1000000,
+    "robux": 1500,
+    "awakening": 17000
+  },
+  "buddha": {
+    "rarity": "legendary",
+    "type": "beast",
+    "price": 1200000,
+    "robux": 1650,
+    "awakening": 14500
+  },
+  "love": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 1300000,
+    "robux": 1700,
+    "awakening": "None"
+  },
+  "spider": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 1500000,
+    "robux": 1800,
+    "awakening": 17300
+  },
+  "sound": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 1700000,
+    "robux": 1900,
+    "awakening": "None"
+  },
+  "phoenix": {
+    "rarity": "legendary",
+    "type": "beast",
+    "price": 1800000,
+    "robux": 2000,
+    "awakening": 18500
+  },
+  "portal": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 1900000,
+    "robux": 2000,
+    "awakening": "None"
+  },
+  "rumble": {
+    "rarity": "legendary",
+    "type": "elemental",
+    "price": 2100000,
+    "robux": 2100,
+    "awakening": 14500
+  },
+  "pain": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 2300000,
+    "robux": 2200,
+    "awakening": "None"
+  },
+  "blizzard": {
+    "rarity": "legendary",
+    "type": "elemental",
+    "price": 2400000,
+    "robux": 2250,
+    "awakening": "None"
+  },
+  "gravity": {
+    "rarity": "mythical",
+    "type": "natural",
+    "price": 2500000,
+    "robux": 2300,
+    "awakening": "None"
+  },
+  "mammoth": {
+    "rarity": "mythical",
+    "type": "beast",
+    "price": 2700000,
+    "robux": 2350,
+    "awakening": "None"
+  },
+  "t-rex": {
+    "rarity": "mythical",
+    "type": "beast",
+    "price": 2700000,
+    "robux": 2350,
+    "awakening": "None"
+  },
+  "dough": {
+    "rarity": "mythical",
+    "type": "elemental",
+    "price": 2800000,
+    "robux": 2400,
+    "awakening": 18500
+  },
+  "shadow": {
+    "rarity": "mythical",
+    "type": "natural",
+    "price": 2900000,
+    "robux": 2425,
+    "awakening": "None"
+  },
+  "venom": {
+    "rarity": "mythical",
+    "type": "natural",
+    "price": 3000000,
+    "robux": 2450,
+    "awakening": "None"
+  },
+  "control": {
+    "rarity": "mythical",
+    "type": "natural",
+    "price": 3200000,
+    "robux": 2500,
+    "awakening": "None"
+  },
+  "spirit": {
+    "rarity": "mythical",
+    "type": "natural",
+    "price": 3400000,
+    "robux": 2550,
+    "awakening": "None"
+  },
+  "dragon": {
+    "rarity": "mythical",
+    "type": "beast",
+    "price": 3500000,
+    "robux": 2600,
+    "awakening": "None"
+  },
+  "leopard": {
+    "rarity": "mythical",
+    "type": "beast",
+    "price": 5000000,
+    "robux": 3000,
+    "awakening": "None"
+  },
+  "kitsune": {
+    "rarity": "mythical",
+    "type": "beast",
+    "price": 8000000,
+    "robux": 4000,
+    "awakening": "None"
+  },
+  "kilo": {
+    "rarity": "common",
+    "type": "natural",
+    "price": 5000,
+    "robux": 50,
+    "awakening": "None"
+  },
+  "revive": {
+    "rarity": "uncommon",
+    "type": "natural",
+    "price": 550000,
+    "robux": 975,
+    "awakening": "None"
+  },
+  "door": {
+    "rarity": "rare",
+    "type": "natural",
+    "price": 950000,
+    "robux": 1400,
+    "awakening": "None"
+  },
+  "string": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 1500000,
+    "robux": 1800,
+    "awakening": 17300
+  },
+  "paw": {
+    "rarity": "legendary",
+    "type": "natural",
+    "price": 2300000,
+    "robux": 2200,
+    "awakening": "None"
+  },
+  "soul": {
+    "rarity": "mythical",
+    "type": "natural",
+    "price": 3400000,
+    "robux": 2550,
+    "awakening": "None"
+  },
+  "meme": {
+    "rarity": "mythical",
+    "type": "n/a",
+    "price": null,
+    "robux": null,
+    "awakening": "None"
+  }
+}
