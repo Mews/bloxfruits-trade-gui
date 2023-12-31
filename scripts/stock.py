@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 restockHours = [4,8,12,16,20,0]
-
+URL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22"
 
 class fruit:
     def __init__(self,name,priceString):
@@ -70,7 +70,7 @@ def getTimeTillRestock():
     
 
 def getCurrentFruits():
-    content = requests.get("https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22").content
+    content = requests.get(URL).content
 
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -80,7 +80,7 @@ def getCurrentFruits():
 
 
 def getLastFruits():
-    content = requests.get("https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22").content
+    content = requests.get(URL).content
 
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -90,7 +90,7 @@ def getLastFruits():
 
 
 def getBeforeLastFruits():
-    content = requests.get("https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22").content
+    content = requests.get(URL).content
 
     soup = BeautifulSoup(content, features="html.parser")
 
