@@ -41,7 +41,7 @@ def downloadTradeFeed():
         #Get author information
         authorDiv = tradeDiv.find("a", {"class": "text-decoration-none text-light"})
         author = authorDiv.get_text().replace(" ","").replace("\n","")
-        authorlink = "https://fruityblox.com"+authorDiv.get("href")
+        authorLink = "https://fruityblox.com"+authorDiv.get("href")
 
         authorpfpDiv = tradeDiv.find("img", {"alt": "Profile image"})
         authorsrc = authorpfpDiv.get("src")
@@ -53,8 +53,56 @@ def downloadTradeFeed():
         tradeButtonDiv = tradeDiv.find("a", {"class": "btn bg-transparent w-100 brand-button"})
         tradeLink = "https://fruityblox.com"+tradeButtonDiv.get("href")
         
-        
 
-        
+        #Get trades
+        #HAS
+        HAS = list()
 
-downloadTradeFeed()
+        hasdiv = tradeDiv.find("div", {"id": "trade-has-col"})
+        FRUITDIVS = hasdiv.find_all("p")
+
+        for fruitDiv in FRUITDIVS:
+            fruitName = fruitDiv.get_text().lower()
+            fruitPermanent = False
+
+            #Skip "has" <p> tag
+            if fruitName == "has":
+                continue
+            
+            if "(perm)" in fruitName:
+                fruitPermanent = True
+
+            HAS.append(bloxfruit(fruitName, permanent=fruitPermanent))
+
+
+        #WANTS
+        WANTS = list()
+
+        wantsdiv = tradeDiv.find("div", {"id": "trade-wants-col"})
+        FRUITDIVS = wantsdiv.find_all("p")
+
+        for fruitDiv in FRUITDIVS:
+            fruitName = fruitDiv.get_text().lower()
+            fruitPermanent = False
+
+            #Skip "has" <p> tag
+            if fruitName == "wants":
+                continue
+            
+            if "(perm)" in fruitName:
+                print(fruitName)
+                fruitPermanent = True
+                fruitName = fruitName.split(" ")[0]
+
+            WANTS.append(bloxfruit(fruitName, permanent=fruitPermanent))
+
+        TRADES.append(trade(HAS=HAS, 
+                            WANTS=WANTS, 
+                            author=author, 
+                            postTime=postTime, 
+                            authorLink=authorLink, 
+                            tradeLink=tradeLink,
+                            authorsrc=authorsrc))
+
+
+
