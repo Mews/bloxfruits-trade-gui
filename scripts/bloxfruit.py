@@ -7,7 +7,7 @@ FILEDIR = "data/fruitdata.json"
 
 
 class bloxfruit():
-    def __init__(self, name, rarity=None, type=None, price=None, robux=None, awakening=None):
+    def __init__(self, name, permanent=False, rarity=None, type=None, price=None, robux=None, awakening=None):
         self.name = name.lower()
 
         if rarity == None: self.rarity = getFruitProperty(name, "rarity")
@@ -24,6 +24,8 @@ class bloxfruit():
 
         if awakening == None: self.awakening = getFruitProperty(name, "awakening")
         else: self.awakening = awakening
+
+        self.permanent = permanent
 
     def __str__(self):
         return self.name.capitalize()
