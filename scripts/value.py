@@ -87,5 +87,3 @@ def readFruitValues(fileDir = FILEDIR):
 def getFruitValue(fruitName, fileDir = FILEDIR):
     with open(fileDir) as f:
         return json.loads(f.read())[fruitName.lower()]
-    
-saveFruitValues()
