@@ -42,14 +42,14 @@ class bloxfruit():
         return json.dumps(self, default=lambda o: o.__dict__, indent=2)
 
     def deserialize(self, serializedData):
-        dict = json.loads(serializedData)
-        self.name=dict["name"]
-        self.rarity=dict["rarity"]
-        self.type=dict["type"] 
-        self.price=dict["price"] 
-        self.robux=dict["robux"]
-        self.awakening=dict["awakening"] 
-        self.permanent=dict["permanent"]
+        data = json.loads(serializedData)
+        self.name=data["name"]
+        self.rarity=data["rarity"]
+        self.type=data["type"] 
+        self.price=data["price"] 
+        self.robux=data["robux"]
+        self.awakening=data["awakening"] 
+        self.permanent=data["permanent"]
 
 
 def downloadFruitData():
