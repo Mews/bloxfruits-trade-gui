@@ -34,8 +34,8 @@
   "spirit": 10000000,
   "mammoth": 18000000,
   "dough": 20000000,
-  "dragon": 30000000,
   "t-rex": 35000000,
+  "dragon": 45000000,
   "leopard": 45000000,
   "kitsune": 135000000,
   "legendary scrolls": 15000000,
@@ -43,7 +43,7 @@
   "2x boss drops": 30000000,
   "2x money": 40000000,
   "2x mastery": 40000000,
-  "+1 fruit storage": 45000000,
+  "fruit storage": 45000000,
   "mythical scrolls": 45000000,
   "dark blade": 128000000,
   "fruit notifier": 180000000

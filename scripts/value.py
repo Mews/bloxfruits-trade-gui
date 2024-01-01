@@ -25,7 +25,7 @@ def getFruitNameFromText(fruitText):
 
     #Find indexes of upper case letters to split
     for i, char in enumerate(fruitTextList):
-        if char.isupper() or char.isdigit() or char == "+":
+        if char.isupper() or char.isdigit():
             splitIndexes.append(i)
 
     #Split text at split indexes
@@ -60,6 +60,7 @@ def downloadFruitValues():
             for div in DIVS:
                 fruitNameDiv = div.find("div", {"class": "flex flex-row justify-between items-start"})
                 fruitName = getFruitNameFromText(fruitNameDiv.get_text())
+                if fruitName.lower() == "1 fruit storage": fruitName = "fruit storage" 
                 fruitValueDiv = div.find("div", {"class": "text-sm font-medium text-[#f2f2f2] mt-px"})
                 fruitValue = getFruitValueFromText(fruitValueDiv.get_text())
 
@@ -87,3 +88,5 @@ def readFruitValues(fileDir = FILEDIR):
 def getFruitValue(fruitName, fileDir = FILEDIR):
     with open(fileDir) as f:
         return json.loads(f.read())[fruitName.lower()]
+    
+saveFruitValues()
