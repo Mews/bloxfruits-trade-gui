@@ -31,5 +31,7 @@
     "mythical",
     "gamepass"
   ],
-  "gamepassvaluesurl": "https://www.bloxfruitsvalues.com/gamepass"
+  "gamepassvaluesurl": "https://www.bloxfruitsvalues.com/gamepass",
+  "INVENTORY": [],
+  "SAVEDTRADES": []
 }

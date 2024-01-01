@@ -39,7 +39,8 @@ def RESTOREDEFAULTCONFIG():
     CONFIGS["valuesurlappends"] = ["common", "uncommon", "rare", "legendary", "mythical", "gamepass"]
     CONFIGS["gamepassvaluesurl"] = "https://www.bloxfruitsvalues.com/gamepass"
 
-    
+    CONFIGS["INVENTORY"] = []    
+    CONFIGS["SAVEDTRADES"] = []
 
     with open(FILEDIR, "w") as f:
         f.write(json.dumps(CONFIGS, indent=2))
