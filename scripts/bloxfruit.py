@@ -142,3 +142,13 @@ def getFruitProperty(fruitName, property, fileDir = FILEDIR):
     with open(fileDir) as f:
         FRUITDATA = json.loads(f.read())
         return FRUITDATA[fruitName.lower()][property.lower()]
+    
+def fruitFromSerialized(serializedData):
+    data = json.loads(serializedData)
+    return bloxfruit(name=data["name"], 
+                     rarity=data["rarity"], 
+                     type=data["type"], 
+                     price=data["price"], 
+                     robux=data["robux"], 
+                     awakening=data["awakening"], 
+                     permanent=data["permanent"])
