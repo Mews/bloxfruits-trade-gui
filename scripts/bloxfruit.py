@@ -13,6 +13,7 @@ FILEDIR = "data/fruitdata.json"
 
 class bloxfruit():
     def __init__(self, name:str, permanent=False, rarity=None, type=None, price=None, robux=None, awakening=None):
+        if name == None: name = "Rocket"
         self.name = name.lower()
 
         if rarity == None: self.rarity = getFruitProperty(name, "rarity")
@@ -40,6 +41,15 @@ class bloxfruit():
     def serialize(self):
         return json.dumps(self, default=lambda o: o.__dict__, indent=2)
 
+    def deserialize(self, serializedData):
+        dict = json.loads(serializedData)
+        self.name=dict["name"]
+        self.rarity=dict["rarity"]
+        self.type=dict["type"] 
+        self.price=dict["price"] 
+        self.robux=dict["robux"]
+        self.awakening=dict["awakening"] 
+        self.permanent=dict["permanent"]
 
 
 def downloadFruitData():
@@ -132,13 +142,3 @@ def getFruitProperty(fruitName, property, fileDir = FILEDIR):
     with open(fileDir) as f:
         FRUITDATA = json.loads(f.read())
         return FRUITDATA[fruitName.lower()][property.lower()]
-    
-def deserialize(dict):
-    dict = json.loads(dict)
-    return bloxfruit(name=dict["name"], 
-                     rarity=dict["rarity"], 
-                     type=dict["type"], 
-                     price=dict["price"], 
-                     robux=dict["robux"], 
-                     awakening=dict["awakening"], 
-                     permanent=dict["permanent"])
