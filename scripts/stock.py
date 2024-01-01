@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from config import getConfig
 
 restockHours = [4,8,12,16,20,0]
-URL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22"
+URL = getConfig("stockurl")
 
 class fruit:
     def __init__(self,name,priceString):

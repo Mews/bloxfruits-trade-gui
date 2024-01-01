@@ -1,12 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+from config import getConfig
 
-URLS = ["common", "uncommon", "rare", "legendary", "mythical", "gamepass"]
+URLS = getConfig("valuesurlappends")
 FILEDIR = "data/values.json"
 
 for i, url in enumerate(URLS):
-    URLS[i] = "https://www.bloxfruitsvalues.com/"+url
+    URLS[i] = getConfig("valuesurl")+url
 
 values = dict()
 
@@ -56,11 +57,16 @@ def downloadFruitValues():
 
         DIVS = soup.find_all("div", {"class": "flex flex-col w-[334px]"})
 
-        if url == "https://www.bloxfruitsvalues.com/gamepass":
+        if url == getConfig("gamepassvaluesurl"):
             for div in DIVS:
                 fruitNameDiv = div.find("div", {"class": "flex flex-row justify-between items-start"})
                 fruitName = getFruitNameFromText(fruitNameDiv.get_text())
-                if fruitName.lower() == "1 fruit storage": fruitName = "fruit storage" 
+
+                #Apply special names from config
+                specialNames = getConfig("specialnames")
+                for sn in specialNames:
+                    fruitName = fruitName.replace(sn[0], sn[1])
+
                 fruitValueDiv = div.find("div", {"class": "text-sm font-medium text-[#f2f2f2] mt-px"})
                 fruitValue = getFruitValueFromText(fruitValueDiv.get_text())
 
@@ -70,6 +76,12 @@ def downloadFruitValues():
             for div in DIVS:
                 fruitNameDiv = div.find("div", {"class": "relative flex flex-col justify-end ml-px pt-2 gap-1 items-end cursor-pointer"})
                 fruitName = getFruitNameFromText(fruitNameDiv.get_text())
+
+                #Apply special names from config
+                specialNames = getConfig("specialnames")
+                for sn in specialNames:
+                    fruitName = fruitName.replace(sn[0], sn[1])
+
                 fruitValueDiv = div.find("div", {"class": "text-sm font-medium text-[#f2f2f2] mt-px"})
                 fruitValue = getFruitValueFromText(fruitValueDiv.get_text())
 

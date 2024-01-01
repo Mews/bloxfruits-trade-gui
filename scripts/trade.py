@@ -4,9 +4,10 @@ from bloxfruit import bloxfruit
 from selenium import webdriver
 import dateutil.parser as dateparser
 from value import getFruitValue
+from config import getConfig
 
 
-URL = "https://fruityblox.com/trading"
+URL = getConfig("tradesurl")
 
 class trade():
     def __init__(self, HAS, WANTS, author, postTime, authorLink, tradeLink, authorsrc):
@@ -15,7 +16,7 @@ class trade():
         self.author = author
         self.postTime = postTime
         self.authorlink = authorLink
-        self.tradelink = tradeLink
+        self.tradeLink = tradeLink
         self.authorsrc = authorsrc
 
     def evaluateHas(self):
@@ -89,6 +90,7 @@ def downloadTradeFeed():
             
             if "(perm)" in fruitName:
                 fruitPermanent = True
+                fruitName = fruitName.split(" ")[0]
 
             HAS.append(bloxfruit(fruitName, permanent=fruitPermanent))
 
@@ -108,7 +110,6 @@ def downloadTradeFeed():
                 continue
             
             if "(perm)" in fruitName:
-                print(fruitName)
                 fruitPermanent = True
                 fruitName = fruitName.split(" ")[0]
 
@@ -121,4 +122,11 @@ def downloadTradeFeed():
                             authorLink=authorLink, 
                             tradeLink=tradeLink,
                             authorsrc=authorsrc))
-        
+    
+    return TRADES
+
+TRADES = downloadTradeFeed()
+
+for t in TRADES:
+    if t.isValuable():
+        print("HAS:",t.evaluateHas(),"WANTS:",t.evaluateWants(),t.tradeLink)

@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
-from scripts.value import getFruitValue
-from scripts.bloxfruit import getFruitProperty
+from value import getFruitValue
+from bloxfruit import getFruitProperty
 
 def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ridge", usePrice = True):
     global fruitIcon
