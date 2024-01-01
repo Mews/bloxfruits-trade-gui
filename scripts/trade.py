@@ -5,7 +5,7 @@ from selenium import webdriver
 import dateutil.parser as dateparser
 from value import getFruitValue
 from config import getConfig
-from PIL import Image
+from PIL import Image, ImageOps, ImageDraw
 from io import BytesIO
 
 
@@ -38,9 +38,20 @@ class trade():
     def isValuable(self) -> bool:
         return self.evaluateHas() > self.evaluateWants()
     
-    def getAutorPfp(self) -> Image:
+    def getAutorPfp(self, circle = True) -> Image:
         content = requests.get(self.authorsrc).content
-        return Image.open(BytesIO(content))
+
+        image = Image.open(BytesIO(content))
+
+        if circle:
+            mask = Image.new("L", image.size, 0)
+            draw = ImageDraw.Draw(mask)
+            draw.ellipse((0,0) + image.size, fill=255)
+
+            image = ImageOps.fit(image, mask.size, centering=(0.5,0.5))
+            image.putalpha(mask)
+
+        return image
 
 
 def downloadTradeFeed():
