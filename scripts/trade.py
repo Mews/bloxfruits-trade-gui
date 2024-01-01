@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from bloxfruit import bloxfruit
 from selenium import webdriver
 import dateutil.parser as dateparser
+from value import getFruitValue
 
 
 URL = "https://fruityblox.com/trading"
@@ -16,6 +17,23 @@ class trade():
         self.authorlink = authorLink
         self.tradelink = tradeLink
         self.authorsrc = authorsrc
+
+    def evaluateHas(self):
+        value = int()
+        for fruit in self.HAS:
+            value += getFruitValue(fruit.name)
+        
+        return value
+    
+    def evaluateWants(self):
+        value = int()
+        for fruit in self.WANTS:
+            value += getFruitValue(fruit.name)
+        
+        return value
+    
+    def isValuable(self):
+        return self.evaluateHas() > self.evaluateWants()
 
 def downloadTradeFeed():
     TRADES = list()
@@ -103,6 +121,4 @@ def downloadTradeFeed():
                             authorLink=authorLink, 
                             tradeLink=tradeLink,
                             authorsrc=authorsrc))
-
-
-
+        
