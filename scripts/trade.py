@@ -4,6 +4,7 @@ from selenium import webdriver
 import dateutil.parser as dateparser
 from PIL import Image, ImageOps, ImageDraw
 from io import BytesIO
+from datetime import datetime
 try:
     from bloxfruit import bloxfruit
     from value import getFruitValue
@@ -17,7 +18,7 @@ except:
 URL = getConfig("tradesurl")
 
 class trade():
-    def __init__(self, HAS, WANTS, author, postTime, authorLink, tradeLink, authorsrc):
+    def __init__(self, HAS:list, WANTS:list, author:str, postTime:datetime, authorLink:str, tradeLink:str, authorsrc:str):
         self.HAS = HAS
         self.WANTS = WANTS
         self.author = author

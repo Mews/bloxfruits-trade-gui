@@ -12,7 +12,7 @@ FILEDIR = "data/fruitdata.json"
 
 
 class bloxfruit():
-    def __init__(self, name, permanent=False, rarity=None, type=None, price=None, robux=None, awakening=None):
+    def __init__(self, name:str, permanent=False, rarity=None, type=None, price=None, robux=None, awakening=None):
         self.name = name.lower()
 
         if rarity == None: self.rarity = getFruitProperty(name, "rarity")
