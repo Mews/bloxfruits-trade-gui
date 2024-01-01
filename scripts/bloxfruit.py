@@ -2,7 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-URL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits"
+FRUITURL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits"
+GPURLS = "https://blox-fruits.fandom.com/wiki/Shop#Products"
 FILEDIR = "data/fruitdata.json"
 
 
@@ -33,10 +34,10 @@ class bloxfruit():
 
 
 def downloadFruitData():
-
+    #FRUITS
     FRUITDATA = dict()
 
-    content = requests.get(URL).content
+    content = requests.get(FRUITURL).content
 
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -65,7 +66,39 @@ def downloadFruitData():
         FRUITDATA[fruitName]["type"] = fruitType
         FRUITDATA[fruitName]["price"] = fruitPrice
         FRUITDATA[fruitName]["robux"] = fruitPriceRobux
+        if fruitAwakening == "None":
+            FRUITDATA[fruitName]["awakening"] = None
+            continue
         FRUITDATA[fruitName]["awakening"] = fruitAwakening
+
+    #GAMEPASSES
+    content = requests.get(GPURLS).content
+
+    soup = BeautifulSoup(content, features="html.parser")
+
+    MDIVS = soup.find_all("div", {"class": "wds-tab__content"})
+    
+    for mdiv in MDIVS:
+        DIVS = mdiv.find_all("tr")
+        for i, div in enumerate(DIVS):
+
+            lineList = div.get_text().split("\n")
+            while "" in lineList: lineList.remove("")
+
+            if len(lineList) == 2 and lineList[1].replace(" ","").replace(",","").isdigit():
+                passName = lineList[0].lower()
+
+                passName = passName.replace("+1 fruit storage", "fruit storage")
+
+                passRobux = int(lineList[1].replace(" ","").replace(",",""))
+
+                FRUITDATA[passName] = dict()
+                FRUITDATA[passName]["rarity"] = "premium"
+                FRUITDATA[passName]["type"] = None
+                FRUITDATA[passName]["price"] = None
+                FRUITDATA[passName]["robux"] = passRobux
+                FRUITDATA[passName]["awakening"] = None
+
 
     return FRUITDATA
 
@@ -82,4 +115,3 @@ def getFruitProperty(fruitName, property, fileDir = FILEDIR):
     with open(fileDir) as f:
         FRUITDATA = json.loads(f.read())
         return FRUITDATA[fruitName.lower()][property.lower()]
-    

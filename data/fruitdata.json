@@ -4,49 +4,49 @@
     "type": "natural",
     "price": 5000,
     "robux": 50,
-    "awakening": "None"
+    "awakening": null
   },
   "spin": {
     "rarity": "common",
     "type": "natural",
     "price": 7500,
     "robux": 75,
-    "awakening": "None"
+    "awakening": null
   },
   "chop": {
     "rarity": "common",
     "type": "natural",
     "price": 30000,
     "robux": 100,
-    "awakening": "None"
+    "awakening": null
   },
   "spring": {
     "rarity": "common",
     "type": "natural",
     "price": 60000,
     "robux": 180,
-    "awakening": "None"
+    "awakening": null
   },
   "bomb": {
     "rarity": "common",
     "type": "natural",
     "price": 80000,
     "robux": 220,
-    "awakening": "None"
+    "awakening": null
   },
   "smoke": {
     "rarity": "common",
     "type": "elemental",
     "price": 100000,
     "robux": 250,
-    "awakening": "None"
+    "awakening": null
   },
   "spike": {
     "rarity": "common",
     "type": "natural",
     "price": 180000,
     "robux": 380,
-    "awakening": "None"
+    "awakening": null
   },
   "flame": {
     "rarity": "uncommon",
@@ -60,7 +60,7 @@
     "type": "beast",
     "price": 300000,
     "robux": 650,
-    "awakening": "None"
+    "awakening": null
   },
   "ice": {
     "rarity": "uncommon",
@@ -88,7 +88,7 @@
     "type": "natural",
     "price": 600000,
     "robux": 1000,
-    "awakening": "None"
+    "awakening": null
   },
   "light": {
     "rarity": "rare",
@@ -102,21 +102,21 @@
     "type": "natural",
     "price": 750000,
     "robux": 1200,
-    "awakening": "None"
+    "awakening": null
   },
   "barrier": {
     "rarity": "rare",
     "type": "natural",
     "price": 800000,
     "robux": 1250,
-    "awakening": "None"
+    "awakening": null
   },
   "ghost": {
     "rarity": "rare",
     "type": "natural",
     "price": 940000,
     "robux": 1275,
-    "awakening": "None"
+    "awakening": null
   },
   "magma": {
     "rarity": "rare",
@@ -144,7 +144,7 @@
     "type": "natural",
     "price": 1300000,
     "robux": 1700,
-    "awakening": "None"
+    "awakening": null
   },
   "spider": {
     "rarity": "legendary",
@@ -158,7 +158,7 @@
     "type": "natural",
     "price": 1700000,
     "robux": 1900,
-    "awakening": "None"
+    "awakening": null
   },
   "phoenix": {
     "rarity": "legendary",
@@ -172,7 +172,7 @@
     "type": "natural",
     "price": 1900000,
     "robux": 2000,
-    "awakening": "None"
+    "awakening": null
   },
   "rumble": {
     "rarity": "legendary",
@@ -186,35 +186,35 @@
     "type": "natural",
     "price": 2300000,
     "robux": 2200,
-    "awakening": "None"
+    "awakening": null
   },
   "blizzard": {
     "rarity": "legendary",
     "type": "elemental",
     "price": 2400000,
     "robux": 2250,
-    "awakening": "None"
+    "awakening": null
   },
   "gravity": {
     "rarity": "mythical",
     "type": "natural",
     "price": 2500000,
     "robux": 2300,
-    "awakening": "None"
+    "awakening": null
   },
   "mammoth": {
     "rarity": "mythical",
     "type": "beast",
     "price": 2700000,
     "robux": 2350,
-    "awakening": "None"
+    "awakening": null
   },
   "t-rex": {
     "rarity": "mythical",
     "type": "beast",
     "price": 2700000,
     "robux": 2350,
-    "awakening": "None"
+    "awakening": null
   },
   "dough": {
     "rarity": "mythical",
@@ -228,70 +228,70 @@
     "type": "natural",
     "price": 2900000,
     "robux": 2425,
-    "awakening": "None"
+    "awakening": null
   },
   "venom": {
     "rarity": "mythical",
     "type": "natural",
     "price": 3000000,
     "robux": 2450,
-    "awakening": "None"
+    "awakening": null
   },
   "control": {
     "rarity": "mythical",
     "type": "natural",
     "price": 3200000,
     "robux": 2500,
-    "awakening": "None"
+    "awakening": null
   },
   "spirit": {
     "rarity": "mythical",
     "type": "natural",
     "price": 3400000,
     "robux": 2550,
-    "awakening": "None"
+    "awakening": null
   },
   "dragon": {
     "rarity": "mythical",
     "type": "beast",
     "price": 3500000,
     "robux": 2600,
-    "awakening": "None"
+    "awakening": null
   },
   "leopard": {
     "rarity": "mythical",
     "type": "beast",
     "price": 5000000,
     "robux": 3000,
-    "awakening": "None"
+    "awakening": null
   },
   "kitsune": {
     "rarity": "mythical",
     "type": "beast",
     "price": 8000000,
     "robux": 4000,
-    "awakening": "None"
+    "awakening": null
   },
   "kilo": {
     "rarity": "common",
     "type": "natural",
     "price": 5000,
     "robux": 50,
-    "awakening": "None"
+    "awakening": null
   },
   "revive": {
     "rarity": "uncommon",
     "type": "natural",
     "price": 550000,
     "robux": 975,
-    "awakening": "None"
+    "awakening": null
   },
   "door": {
     "rarity": "rare",
     "type": "natural",
     "price": 950000,
     "robux": 1400,
-    "awakening": "None"
+    "awakening": null
   },
   "string": {
     "rarity": "legendary",
@@ -305,20 +305,104 @@
     "type": "natural",
     "price": 2300000,
     "robux": 2200,
-    "awakening": "None"
+    "awakening": null
   },
   "soul": {
     "rarity": "mythical",
     "type": "natural",
     "price": 3400000,
     "robux": 2550,
-    "awakening": "None"
+    "awakening": null
   },
   "meme": {
     "rarity": "mythical",
     "type": "n/a",
     "price": null,
     "robux": null,
-    "awakening": "None"
+    "awakening": null
+  },
+  "respawn bosses": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 50,
+    "awakening": null
+  },
+  "stat reset": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 75,
+    "awakening": null
+  },
+  "change race": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 90,
+    "awakening": null
+  },
+  "fruit storage": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 400,
+    "awakening": null
+  },
+  "5x legendary scrolls": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 800,
+    "awakening": null
+  },
+  "3x mythical scrolls": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 1500,
+    "awakening": null
+  },
+  "2x boss drop chance": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 350,
+    "awakening": null
+  },
+  "fast boats": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 350,
+    "awakening": null
+  },
+  "2x money": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 450,
+    "awakening": null
+  },
+  "2x mastery": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 450,
+    "awakening": null
+  },
+  "dark blade": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 1200,
+    "awakening": null
+  },
+  "fruit notifier": {
+    "rarity": "premium",
+    "type": null,
+    "price": null,
+    "robux": 2700,
+    "awakening": null
   }
 }
