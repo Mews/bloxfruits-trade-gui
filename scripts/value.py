@@ -11,7 +11,7 @@ for i, url in enumerate(URLS):
 
 values = dict()
 
-def listToString(list):
+def listToString(list) -> str:
     string = str()
 
     for char in list:
@@ -100,5 +100,3 @@ def readFruitValues(fileDir = FILEDIR):
 def getFruitValue(fruitName, fileDir = FILEDIR):
     with open(fileDir) as f:
         return json.loads(f.read())[fruitName.lower()]
-    
-saveFruitValues()
