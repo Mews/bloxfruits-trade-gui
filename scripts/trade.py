@@ -5,6 +5,8 @@ from selenium import webdriver
 import dateutil.parser as dateparser
 from value import getFruitValue
 from config import getConfig
+from PIL import Image
+from io import BytesIO
 
 
 URL = getConfig("tradesurl")
@@ -35,6 +37,11 @@ class trade():
     
     def isValuable(self):
         return self.evaluateHas() > self.evaluateWants()
+    
+    def getAutorPfp(self):
+        content = requests.get(self.authorsrc).content
+        return Image.open(BytesIO(content))
+
 
 def downloadTradeFeed():
     TRADES = list()
@@ -124,9 +131,3 @@ def downloadTradeFeed():
                             authorsrc=authorsrc))
     
     return TRADES
-
-TRADES = downloadTradeFeed()
-
-for t in TRADES:
-    if t.isValuable():
-        print("HAS:",t.evaluateHas(),"WANTS:",t.evaluateWants(),t.tradeLink)
