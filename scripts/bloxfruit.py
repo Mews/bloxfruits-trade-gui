@@ -32,8 +32,7 @@ class bloxfruit():
 
         self.permanent = permanent
 
-        if getFruitProperty(name, "price") == None:
-            self.price = self.robux
+        if self.price == None: self.price = self.robux
 
     def __str__(self):
         return self.name.capitalize()
