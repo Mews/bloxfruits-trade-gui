@@ -21,24 +21,24 @@ class trade():
         self.tradeLink = tradeLink
         self.authorsrc = authorsrc
 
-    def evaluateHas(self):
+    def evaluateHas(self) -> int:
         value = int()
         for fruit in self.HAS:
             value += getFruitValue(fruit.name)
         
         return value
     
-    def evaluateWants(self):
+    def evaluateWants(self) -> int:
         value = int()
         for fruit in self.WANTS:
             value += getFruitValue(fruit.name)
         
         return value
     
-    def isValuable(self):
+    def isValuable(self) -> bool:
         return self.evaluateHas() > self.evaluateWants()
     
-    def getAutorPfp(self):
+    def getAutorPfp(self) -> Image:
         content = requests.get(self.authorsrc).content
         return Image.open(BytesIO(content))
 

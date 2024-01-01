@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 from config import getConfig
 
 restockHours = [4,8,12,16,20,0]
@@ -55,7 +55,7 @@ def textToFruits(text):
     return fruits
 
 
-def getTimeTillRestock():
+def getTimeTillRestock() -> timedelta:
 
     nextRestockHour = int()
     for restockHour in restockHours:
@@ -70,7 +70,7 @@ def getTimeTillRestock():
     return restockTime - datetime.now()
     
 
-def getCurrentFruits():
+def getCurrentFruits() -> list:
     content = requests.get(URL).content
 
     soup = BeautifulSoup(content, features="html.parser")
@@ -80,7 +80,7 @@ def getCurrentFruits():
     return textToFruits(currentText)
 
 
-def getLastFruits():
+def getLastFruits() -> list:
     content = requests.get(URL).content
 
     soup = BeautifulSoup(content, features="html.parser")
@@ -90,7 +90,7 @@ def getLastFruits():
     return textToFruits(lastText)
 
 
-def getBeforeLastFruits():
+def getBeforeLastFruits() -> list:
     content = requests.get(URL).content
 
     soup = BeautifulSoup(content, features="html.parser")
