@@ -7,6 +7,24 @@
     [
       "2x boss drop chance",
       "2x boss drops"
+    ],
+    [
+      "1 fruit storage",
+      "fruit storage"
     ]
-  ]
+  ],
+  "fruitdataurl": "https://blox-fruits.fandom.com/wiki/Blox_Fruits",
+  "gamepassdataurl": "https://blox-fruits.fandom.com/wiki/Shop",
+  "stockurl": "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22",
+  "tradesurl": "https://fruityblox.com/trading",
+  "valuesurl": "https://www.bloxfruitsvalues.com/",
+  "valuesurlappends": [
+    "common",
+    "uncommon",
+    "rare",
+    "legendary",
+    "mythical",
+    "gamepass"
+  ],
+  "gamepassvaluesurl": "https://www.bloxfruitsvalues.com/gamepass"
 }
