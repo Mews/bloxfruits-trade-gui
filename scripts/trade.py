@@ -4,7 +4,8 @@ from selenium import webdriver
 import dateutil.parser as dateparser
 from PIL import Image, ImageOps, ImageDraw, UnidentifiedImageError
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timedelta
+from math import floor
 try:
     from bloxfruit import bloxfruit
     from value import getFruitValue
@@ -66,6 +67,45 @@ class trade():
     
     def getGain(self) -> int:
         return self.evaluateHas() - self.evaluateWants()
+    
+    def getTimeSincePost(self) -> timedelta:
+        naivePostTime = self.postTime.replace(tzinfo=None)
+        timeDelta = datetime.now()-naivePostTime
+        
+        totalSeconds = int(timeDelta.total_seconds())
+        days = floor(totalSeconds / (24*60*60))
+        totalSeconds -= totalSeconds*24*60*60
+        hours = floor(totalSeconds / (60*60))
+        totalSeconds -= totalSeconds*60*60
+        minutes = floor(totalSeconds / 60)
+        totalSeconds -= totalSeconds*60
+        seconds = totalSeconds
+
+        return timedelta(days=days, hours=hours, minutes=minutes, seconds=seconds, microseconds=0, milliseconds=0)
+    
+    def getPrettyTimeSincePost(self) -> str:
+        naivePostTime = self.postTime.replace(tzinfo=None)
+        timeDelta = datetime.now()-naivePostTime
+        
+        totalSeconds = int(timeDelta.total_seconds())
+        days = floor(totalSeconds / (24*60*60))
+        totalSeconds -= totalSeconds*24*60*60
+        hours = floor(totalSeconds / (60*60))
+        totalSeconds -= totalSeconds*60*60
+        minutes = floor(totalSeconds / 60)
+        totalSeconds -= totalSeconds*60
+        seconds = totalSeconds
+
+        if days == 0:
+            if hours == 0:
+                if minutes == 0:
+                    return seconds+" ago"
+                return minutes+" ago"
+            return hours+" ago"
+        return days+" ago"
+
+        
+
 
 
 def downloadTradeFeed():
