@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import dateutil.parser as dateparser
-from PIL import Image, ImageOps, ImageDraw
+from PIL import Image, ImageOps, ImageDraw, UnidentifiedImageError
 from io import BytesIO
 from datetime import datetime
 try:
@@ -45,9 +45,14 @@ class trade():
         return self.evaluateHas() > self.evaluateWants()
     
     def getAutorPfp(self, circle = True) -> Image:
-        content = requests.get(self.authorsrc).content
+        try:
+            content = requests.get(self.authorsrc).content
 
-        image = Image.open(BytesIO(content))
+            image = Image.open(BytesIO(content))
+        except UnidentifiedImageError:
+            content = requests.get(getConfig("staticpfpsrc")).content
+
+            image = Image.open(BytesIO(content))
 
         if circle:
             mask = Image.new("L", image.size, 0)
@@ -92,7 +97,8 @@ def downloadTradeFeed():
         authorpfpDiv = tradeDiv.find("img", {"alt": "Profile image"})
         authorsrc = authorpfpDiv.get("src")
 
-        if authorsrc.startswith("/static"): authorsrc = getConfig("staticpfpsrc")
+        if authorsrc.startswith("/static") or authorsrc.startswith("https://cdn.discordapp.com"): authorsrc = getConfig("staticpfpsrc")
+
 
         #Get trade link
         tradeButtonDiv = tradeDiv.find("a", {"class": "btn bg-transparent w-100 brand-button"})
