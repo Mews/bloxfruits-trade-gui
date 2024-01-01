@@ -22,7 +22,8 @@ def RESTOREDEFAULTCONFIG():
     CONFIGS["specialnames"] = [
         ["+1 fruit storage", "fruit storage"],
         ["2x boss drop chance", "2x boss drops"],
-        ["1 fruit storage", "fruit storage"]
+        ["1 fruit storage", "fruit storage"],
+        ["5x legendary scrolls", "legendary scrolls"]
     ]
 
     #URLS
