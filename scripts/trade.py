@@ -6,6 +6,7 @@ from PIL import Image, ImageOps, ImageDraw, UnidentifiedImageError
 from io import BytesIO
 from datetime import datetime, timedelta
 from math import floor
+import json
 try:
     from bloxfruit import bloxfruit
     from value import getFruitValue
@@ -104,7 +105,6 @@ class trade():
                 return str(minutes)+" minutes ago"
             return str(hours)+" hours ago"
         return str(days)+" days ago"
-
         
 
 
@@ -197,3 +197,10 @@ def downloadTradeFeed():
                             authorsrc=authorsrc))
     
     return TRADES
+
+""" t = trade(HAS=[bloxfruit("rocket"), bloxfruit("gravity")],
+          WANTS=[bloxfruit("blizzard"), bloxfruit("sound")],
+          author="Mews",
+          postTime=datetime.now(),
+          authorLink="https://fruityblox.com/player/658c17401deedde35408bc1e",
+          authorsrc="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-5AD9D35C0B30400153BE8A997D3FC16F-Png/352/352/AvatarHeadshot/Png/noFilter") """
