@@ -42,5 +42,3 @@ def RESTOREDEFAULTCONFIG():
 
     with open(FILEDIR, "w") as f:
         f.write(json.dumps(CONFIGS, indent=2))
-
-RESTOREDEFAULTCONFIG()
