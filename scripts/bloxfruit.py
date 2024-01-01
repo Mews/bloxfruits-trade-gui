@@ -36,6 +36,9 @@ class bloxfruit():
 
     def __str__(self):
         return self.name.capitalize()
+    
+    def serialize(self):
+        return json.dumps(self, default=lambda o: o.__dict__, indent=2)
 
 
 
@@ -129,3 +132,13 @@ def getFruitProperty(fruitName, property, fileDir = FILEDIR):
     with open(fileDir) as f:
         FRUITDATA = json.loads(f.read())
         return FRUITDATA[fruitName.lower()][property.lower()]
+    
+def deserialize(dict):
+    dict = json.loads(dict)
+    return bloxfruit(name=dict["name"], 
+                     rarity=dict["rarity"], 
+                     type=dict["type"], 
+                     price=dict["price"], 
+                     robux=dict["robux"], 
+                     awakening=dict["awakening"], 
+                     permanent=dict["permanent"])
