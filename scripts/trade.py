@@ -25,7 +25,7 @@ class trade():
         self.WANTS = WANTS
         self.author = author
         self.postTime = postTime
-        self.authorlink = authorLink
+        self.authorLink = authorLink
         self.tradeLink = tradeLink
         self.authorsrc = authorsrc
 
@@ -105,8 +105,28 @@ class trade():
                 return str(minutes)+" minutes ago"
             return str(hours)+" hours ago"
         return str(days)+" days ago"
-        
+    
 
+    def serialize(self):
+        ATRIBUTES = vars(self)
+        data = dict()
+
+        for atribute in ATRIBUTES:
+            if not atribute == None:
+                try:
+                    json.dumps(ATRIBUTES[atribute], indent=2)
+                    data[atribute] = ATRIBUTES[atribute]
+                except:
+                    if atribute == "HAS" or atribute == "WANTS":
+                        data[atribute] = list()
+                        for fruit in ATRIBUTES[atribute]:
+                            data[atribute].append(fruit.serialize())
+                    if atribute == "postTime":
+                        data[atribute] = str(self.postTime)
+        
+        return json.dumps(data, indent=2)
+            
+    
 
 
 def downloadTradeFeed():
@@ -198,9 +218,44 @@ def downloadTradeFeed():
     
     return TRADES
 
+def tradeFromSerialized(serializedData:str) -> trade:
+    data = json.loads(serializedData)
+    
+    for atribute in data:
+        value = data[atribute]
+        HAS = list()
+        WANTS = list()
+
+        if atribute == "HAS":
+            for fruitData in value:
+                newFruit = bloxfruit(None)
+                newFruit.deserialize(fruitData)
+                HAS.append(newFruit)
+        
+        
+        
+        elif atribute == "WANTS":
+            for fruitData in value:
+                newFruit = bloxfruit(None)
+                newFruit.deserialize(fruitData)
+                WANTS.append(newFruit)
+
+        elif atribute == "postTime": postTime = dateparser.parse(value, fuzzy=True)
+
+        elif atribute == "author": author = value
+        elif atribute == "tradeLink": tradeLink = value
+        elif atribute == "authorLink": authorLink = value
+        elif atribute == "authorsrc": authorsrc = value
+
+    return trade(HAS=HAS, WANTS=WANTS, author=author, postTime=postTime, authorLink=authorLink, tradeLink=tradeLink, authorsrc=authorsrc)
+
+        
+
+
 """ t = trade(HAS=[bloxfruit("rocket"), bloxfruit("gravity")],
           WANTS=[bloxfruit("blizzard"), bloxfruit("sound")],
           author="Mews",
           postTime=datetime.now(),
+          tradeLink="https://fruityblox.com/trade/65931283920bba3c155c62cc",
           authorLink="https://fruityblox.com/player/658c17401deedde35408bc1e",
           authorsrc="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-5AD9D35C0B30400153BE8A997D3FC16F-Png/352/352/AvatarHeadshot/Png/noFilter") """
