@@ -41,7 +41,7 @@ class bloxfruit():
     def serialize(self):
         return json.dumps(self, default=lambda o: o.__dict__, indent=2)
 
-    def deserialize(self, serializedData):
+    def deserialize(self, serializedData:str):
         data = json.loads(serializedData)
         self.name=data["name"]
         self.rarity=data["rarity"]
@@ -143,7 +143,7 @@ def getFruitProperty(fruitName, property, fileDir = FILEDIR):
         FRUITDATA = json.loads(f.read())
         return FRUITDATA[fruitName.lower()][property.lower()]
     
-def fruitFromSerialized(serializedData):
+def fruitFromSerialized(serializedData:str) -> bloxfruit:
     data = json.loads(serializedData)
     return bloxfruit(name=data["name"], 
                      rarity=data["rarity"], 
