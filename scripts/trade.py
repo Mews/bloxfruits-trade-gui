@@ -88,21 +88,22 @@ class trade():
         timeDelta = datetime.now()-naivePostTime
         
         totalSeconds = int(timeDelta.total_seconds())
+    
         days = floor(totalSeconds / (24*60*60))
-        totalSeconds -= totalSeconds*24*60*60
+        totalSeconds -= days*24*60*60
         hours = floor(totalSeconds / (60*60))
-        totalSeconds -= totalSeconds*60*60
+        totalSeconds -= hours*60*60
         minutes = floor(totalSeconds / 60)
-        totalSeconds -= totalSeconds*60
+        totalSeconds -= minutes*60
         seconds = totalSeconds
 
         if days == 0:
             if hours == 0:
                 if minutes == 0:
-                    return seconds+" ago"
-                return minutes+" ago"
-            return hours+" ago"
-        return days+" ago"
+                    return str(seconds)+" seconds ago"
+                return str(minutes)+" minutes ago"
+            return str(hours)+" hours ago"
+        return str(days)+" days ago"
 
         
 
