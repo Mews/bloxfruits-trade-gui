@@ -17,6 +17,7 @@
   "gamepassdataurl": "https://blox-fruits.fandom.com/wiki/Shop",
   "stockurl": "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22",
   "tradesurl": "https://fruityblox.com/trading",
+  "staticpfpsrc": "https://fruityblox.com/static/img/profile-pic.png",
   "valuesurl": "https://www.bloxfruitsvalues.com/",
   "valuesurlappends": [
     "common",

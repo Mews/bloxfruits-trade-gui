@@ -92,8 +92,7 @@ def downloadTradeFeed():
         authorpfpDiv = tradeDiv.find("img", {"alt": "Profile image"})
         authorsrc = authorpfpDiv.get("src")
 
-        if authorsrc.startswith("/static"): authorsrc = "https://fruityblox.com"+authorsrc
-        if authorsrc.startswith("https://cdn.discordapp.com"): authorsrc = "https://fruityblox.com/static/img/profile-pic.png"
+        if authorsrc.startswith("/static"): authorsrc = getConfig("staticpfpsrc")
 
         #Get trade link
         tradeButtonDiv = tradeDiv.find("a", {"class": "btn bg-transparent w-100 brand-button"})

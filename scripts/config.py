@@ -32,6 +32,7 @@ def RESTOREDEFAULTCONFIG():
     CONFIGS["stockurl"] = "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22"
     
     CONFIGS["tradesurl"] = "https://fruityblox.com/trading"
+    CONFIGS["staticpfpsrc"] = "https://fruityblox.com/static/img/profile-pic.png"
 
     CONFIGS["valuesurl"] = "https://www.bloxfruitsvalues.com/"
     CONFIGS["valuesurlappends"] = ["common", "uncommon", "rare", "legendary", "mythical", "gamepass"]
@@ -41,3 +42,5 @@ def RESTOREDEFAULTCONFIG():
 
     with open(FILEDIR, "w") as f:
         f.write(json.dumps(CONFIGS, indent=2))
+
+RESTOREDEFAULTCONFIG()
