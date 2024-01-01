@@ -58,6 +58,9 @@ class trade():
             image.putalpha(mask)
 
         return image
+    
+    def getGain(self) -> int:
+        return self.evaluateHas() - self.evaluateWants()
 
 
 def downloadTradeFeed():
