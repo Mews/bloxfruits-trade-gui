@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
-from config import getConfig
+try:
+    from config import getConfig
+except:
+    from .config import getConfig
 
 restockHours = [4,8,12,16,20,0]
 URL = getConfig("stockurl")

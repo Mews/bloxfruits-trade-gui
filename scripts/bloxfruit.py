@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from config import getConfig
+try:
+    from config import getConfig
+except:
+    from .config import getConfig
 
 FRUITURL = getConfig("fruitdataurl")
 GPURLS = getConfig("gamepassdataurl")

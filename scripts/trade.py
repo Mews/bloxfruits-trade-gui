@@ -1,12 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
-from bloxfruit import bloxfruit
 from selenium import webdriver
 import dateutil.parser as dateparser
-from value import getFruitValue
-from config import getConfig
 from PIL import Image, ImageOps, ImageDraw
 from io import BytesIO
+try:
+    from bloxfruit import bloxfruit
+    from value import getFruitValue
+    from config import getConfig
+except:
+    from .bloxfruit import bloxfruit
+    from .value import getFruitValue
+    from .config import getConfig
 
 
 URL = getConfig("tradesurl")

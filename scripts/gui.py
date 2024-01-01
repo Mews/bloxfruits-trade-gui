@@ -1,9 +1,16 @@
 import tkinter as tk
 from PIL import ImageTk, Image
-from value import getFruitValue
-from bloxfruit import getFruitProperty
+try:
+    from value import getFruitValue
+    from bloxfruit import getFruitProperty
+    from trade import trade
+except:
+    from .value import getFruitValue
+    from .bloxfruit import getFruitProperty
+    from .trade import trade
 
-def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ridge", usePrice = True):
+
+def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ridge", usePrice = True) -> tk.Frame:
     global fruitIcon
     fruitName = fruitName.lower()
 
