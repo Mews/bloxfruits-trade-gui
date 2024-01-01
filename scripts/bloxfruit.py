@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 
 FRUITURL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits"
-GPURLS = "https://blox-fruits.fandom.com/wiki/Shop#Products"
+GPURLS = "https://blox-fruits.fandom.com/wiki/Shop"
 FILEDIR = "data/fruitdata.json"
 
 
