@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import config
 
 FRUITURL = "https://blox-fruits.fandom.com/wiki/Blox_Fruits"
 GPURLS = "https://blox-fruits.fandom.com/wiki/Shop"
@@ -61,6 +62,10 @@ def downloadFruitData():
         if not fruitAwakening == "None":
             fruitAwakening = int(fruitAwakening)
 
+        specialNames = config.getConfig("specialnames")
+        for sn in specialNames:
+            fruitName = fruitName.replace(sn[0], sn[1])
+        
         FRUITDATA[fruitName] = dict()
         FRUITDATA[fruitName]["rarity"] = fruitRarity
         FRUITDATA[fruitName]["type"] = fruitType
@@ -88,7 +93,9 @@ def downloadFruitData():
             if len(lineList) == 2 and lineList[1].replace(" ","").replace(",","").isdigit():
                 passName = lineList[0].lower()
 
-                passName = passName.replace("+1 fruit storage", "fruit storage")
+                specialNames = config.getConfig("specialnames")
+                for sn in specialNames:
+                    passName = passName.replace(sn[0], sn[1])
 
                 passRobux = int(lineList[1].replace(" ","").replace(",",""))
 
