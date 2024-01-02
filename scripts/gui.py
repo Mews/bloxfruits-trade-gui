@@ -6,10 +6,12 @@ try:
     from value import getFruitValue
     from bloxfruit import getFruitProperty
     from trade import trade
+    from config import getConfig
 except:
     from .value import getFruitValue
     from .bloxfruit import getFruitProperty
     from .trade import trade
+    from .config import getConfig
 
 #Fonts
 #Cascadia Code
@@ -18,7 +20,14 @@ except:
 #Malgun gothic
 
 
-def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ridge", usePrice = True, permanent = False, font=("Segoe UI", 9)) -> tk.Frame:
+def fruitLabel(root, 
+               fruitName = "rocket", 
+               width = 75, height = 75, 
+               relief = "ridge", 
+               usePrice = True, 
+               permanent = False, 
+               font=("Segoe UI", 9), 
+               useRarityColors = True) -> tk.Frame:
     global fruitIcon
     fruitName = fruitName.lower()
 
@@ -38,9 +47,14 @@ def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ri
 
     picLabel = tk.Label(frame, image=fruitIcon)
     picLabel.image = fruitIcon
+
     fruitNameText = fruitName.capitalize()
     if permanent: fruitNameText += " (Perm)"
-    nameLabel = tk.Label(frame, text=fruitNameText, font=font)
+
+    if useRarityColors: fg = getConfig("raritycolors")[getFruitProperty(fruitName, "rarity")]
+    else: fg = "black"
+
+    nameLabel = tk.Label(frame, text=fruitNameText, font=font, fg=fg)
     priceLabel = tk.Label(frame, text=fruitPriceString, fg="green", font=font)
  
     picLabel.pack()
