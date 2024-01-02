@@ -167,7 +167,9 @@ root.rowconfigure(0, weight=1)
 lastStockButton = tk.Button(stockFrame, text="Toggle Last stock", command=toggleLastStock, padx=100, bg="white")
 lastStockButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
 blastStockButton = tk.Button(stockFrame, text="Toggle Before Last stock", command=toggleBLastStock, padx=100, bg="white")
-blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
+blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
+
+
 
 updateStockFrame()
 
