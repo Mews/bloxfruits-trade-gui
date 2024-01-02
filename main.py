@@ -11,10 +11,10 @@ from tkscrolledframe import ScrolledFrame
 
 #Create main window
 root = tk.Tk()
-root.geometry("800x800")
+root.geometry("900x800")
 root.iconbitmap("assets/kitsune.ico")
 root.title("Blox Fruits")
-
+root.resizable(0,0)
 
 #Update fruit values when starting
 saveFruitValues()
@@ -145,9 +145,9 @@ def initStockFrame():
     timeTillRestockLabel = tk.Label(stockFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg="white", relief="ridge", borderwidth=2, padx=5, pady=2)
     timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
 
-    lastStockButton = tk.Button(stockFrame, text="Toggle Last stock", command=toggleLastStock, padx=100, bg="white")
+    lastStockButton = tk.Button(stockFrame, text="Toggle Last Stock", command=toggleLastStock, padx=100, bg="white")
     lastStockButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
-    blastStockButton = tk.Button(stockFrame, text="Toggle Before Last stock", command=toggleBLastStock, padx=100, bg="white")
+    blastStockButton = tk.Button(stockFrame, text="Toggle Before Last Stock", command=toggleBLastStock, padx=100, bg="white")
     blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
 
     updateStockFrame()
