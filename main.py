@@ -4,6 +4,7 @@ from scripts.gui import *
 from scripts.stock import *
 from scripts.value import saveFruitValues
 from scripts.bloxfruit import *
+from tkscrolledframe import ScrolledFrame
 
 #Segoe UI
 #90A4AE
@@ -138,40 +139,48 @@ def toggleBLastStock():
         blFrame.grid(row=103, column=0, columnspan=2, sticky=tk.W)
         blastVisible = False
 
+def initStockFrame():
+    global timeTillRestockLabel
+
+    timeTillRestockLabel = tk.Label(stockFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg="white", relief="ridge", borderwidth=2, padx=5, pady=2)
+    timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
+
+    lastStockButton = tk.Button(stockFrame, text="Toggle Last stock", command=toggleLastStock, padx=100, bg="white")
+    lastStockButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
+    blastStockButton = tk.Button(stockFrame, text="Toggle Before Last stock", command=toggleBLastStock, padx=100, bg="white")
+    blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
+
+    updateStockFrame()
+
+
 #----FRUIT STOCK--------~
 STOCKBG = "#90A4AE"
 
 CFRUITLABELS = list()
 LFRUITLABELS = list()
 BLFRUITLABELS = list()
-#CFRUITS = getCurrentFruits()
-CFRUITS = [bloxfruit("kitsune"),bloxfruit("shadow"),bloxfruit("leopard"),bloxfruit("buddha"),bloxfruit("gravity"),bloxfruit("pain"),bloxfruit("sound")]
+CFRUITS = getCurrentFruits()
+#FRUITS = [bloxfruit("kitsune"),bloxfruit("shadow"),bloxfruit("leopard"),bloxfruit("buddha"),bloxfruit("gravity"),bloxfruit("pain"),bloxfruit("sound"),bloxfruit("kitsune"),bloxfruit("shadow"),bloxfruit("leopard"),bloxfruit("buddha"),bloxfruit("gravity"),bloxfruit("pain"),bloxfruit("sound")]
 LFRUITS = getLastFruits()
 BLFRUITS = getBeforeLastFruits()
 lastVisible = False
 blastVisible = False
 
 #Gui elements
-stockFrame = tk.Frame(root, relief="groove", borderwidth=3, width=200, background=STOCKBG)
-stockFrame.grid(column=0, row=0, sticky=tk.N+tk.W+tk.S)
+scrollableStockFrame = ScrolledFrame(root, relief="solid", scrollbars="vertical", width=200)
+scrollableStockFrame.grid(column=0, row=0, sticky=tk.N+tk.W+tk.S)
+
+stockFrame = scrollableStockFrame.display_widget(tk.Frame, fit_width=True)
+stockFrame.config(borderwidth=3, background=STOCKBG, height=1500)
 stockFrame.grid_propagate(False)
 stockFrame.columnconfigure(0, weight=1, uniform="stockframe")
 stockFrame.columnconfigure(1, weight=1, uniform="stockframe")
 
-timeTillRestockLabel = tk.Label(stockFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg="white", relief="ridge", borderwidth=2, padx=5, pady=2)
-timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
 #Lets column 0 and row 0 in root stretch
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-lastStockButton = tk.Button(stockFrame, text="Toggle Last stock", command=toggleLastStock, padx=100, bg="white")
-lastStockButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
-blastStockButton = tk.Button(stockFrame, text="Toggle Before Last stock", command=toggleBLastStock, padx=100, bg="white")
-blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
-
-
-
-updateStockFrame()
+initStockFrame()
 
 ############ STOCK FRAME ############
 ############ STOCK FRAME ############
@@ -182,4 +191,3 @@ stockLoop()
 
 root.update_idletasks()
 root.mainloop()
-
