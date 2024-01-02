@@ -18,13 +18,22 @@ def getConfig(config):
 def RESTOREDEFAULTCONFIG():
     CONFIGS = dict()
 
-    #SPECIAL ITEM NAMES (will replace first name with second in bloxfruit.py and main.py)
+    #SPECIAL ITEM NAMES (will replace first name with second in bloxfruit.py and value.py)
     CONFIGS["specialnames"] = [
         ["+1 fruit storage", "fruit storage"],
         ["2x boss drop chance", "2x boss drops"],
         ["1 fruit storage", "fruit storage"],
         ["5x legendary scrolls", "legendary scrolls"]
     ]
+    
+    CONFIGS["raritycolors"] = {
+        "common":"#000000",
+        "uncommon": "#5E8BD6",
+        "rare": "#8B55FB",
+        "legendary": "#D12DDF",
+        "mythical": "#EA3131",
+        "premium": "#FCCB00"
+    }
 
     #URLS
     CONFIGS["fruitdataurl"] = "https://blox-fruits.fandom.com/wiki/Blox_Fruits"
@@ -39,7 +48,8 @@ def RESTOREDEFAULTCONFIG():
     CONFIGS["valuesurlappends"] = ["common", "uncommon", "rare", "legendary", "mythical", "gamepass"]
     CONFIGS["gamepassvaluesurl"] = "https://www.bloxfruitsvalues.com/gamepass"
 
-    CONFIGS["INVENTORY"] = []    
+    #User data
+    CONFIGS["INVENTORY"] = []
     CONFIGS["SAVEDTRADES"] = []
 
     with open(FILEDIR, "w") as f:
