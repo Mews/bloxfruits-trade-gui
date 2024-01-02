@@ -107,7 +107,7 @@ def worker(func, resultQueue):
     result = func()
     resultQueue.put(result)
 
-def getFruitDataInParalel():
+def getFruitStockInParalel():
     resultQueues = [Queue() for i in range(3)]
     
     PROCESSES = [
