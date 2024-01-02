@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
+from multiprocessing.dummy import Process, Queue
 try:
     from config import getConfig
 except:
@@ -101,3 +102,24 @@ def getBeforeLastFruits() -> list:
     blastText = soup.find("div", {"id": "mw-customcollapsible-beforelast"}).get_text()
 
     return textToFruits(blastText)
+
+def worker(func, resultQueue):
+    result = func()
+    resultQueue.put(result)
+
+def getFruitDataInParalel():
+    resultQueues = [Queue() for i in range(3)]
+    
+    PROCESSES = [
+        Process(target=worker, args=(getCurrentFruits, resultQueues[0])),
+        Process(target=worker, args=(getLastFruits, resultQueues[1])),
+        Process(target=worker, args=(getBeforeLastFruits, resultQueues[2]))
+    ]
+
+    for p in PROCESSES:
+        p.start()
+    
+    for p in PROCESSES:
+        p.join()
+
+    return resultQueues[0].get(), resultQueues[1].get(), resultQueues[2].get()
