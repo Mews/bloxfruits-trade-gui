@@ -23,6 +23,9 @@ saveFruitValues()
 ############ STOCK FRAME ############
 ############ STOCK FRAME ############
 ############ STOCK FRAME ############
+############ STOCK FRAME ############
+############ STOCK FRAME ############
+
 def stockLoop():
     global CFRUITS, LFRUITS, BLFRUITS
 
@@ -152,19 +155,19 @@ def initStockFrame():
 
     updateStockFrame()
 
-
 #----FRUIT STOCK--------~
 STOCKBG = "#90A4AE"
 
 CFRUITLABELS = list()
 LFRUITLABELS = list()
 BLFRUITLABELS = list()
-CFRUITS = getCurrentFruits()
-#FRUITS = [bloxfruit("kitsune"),bloxfruit("shadow"),bloxfruit("leopard"),bloxfruit("buddha"),bloxfruit("gravity"),bloxfruit("pain"),bloxfruit("sound"),bloxfruit("kitsune"),bloxfruit("shadow"),bloxfruit("leopard"),bloxfruit("buddha"),bloxfruit("gravity"),bloxfruit("pain"),bloxfruit("sound")]
-LFRUITS = getLastFruits()
-BLFRUITS = getBeforeLastFruits()
+#CFRUITS = getCurrentFruits()
+#LFRUITS = getLastFruits()
+#BLFRUITS = getBeforeLastFruits()
 lastVisible = False
 blastVisible = False
+
+CFRUITS, LFRUITS, BLFRUITS = getFruitStockInParalel()
 
 #Gui elements
 scrollableStockFrame = ScrolledFrame(root, relief="solid", scrollbars="vertical", width=200)
@@ -182,9 +185,11 @@ root.rowconfigure(0, weight=1)
 
 initStockFrame()
 
-############ STOCK FRAME ############
-############ STOCK FRAME ############
-############ STOCK FRAME ############
+############ TRADE FRAME ############
+############ TRADE FRAME ############
+############ TRADE FRAME ############
+############ TRADE FRAME ############
+############ TRADE FRAME ############
 
 #Start loops
 stockLoop()
