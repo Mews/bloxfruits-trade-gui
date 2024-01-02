@@ -18,7 +18,7 @@ except:
 #Malgun gothic
 
 
-def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ridge", usePrice = True, permanent = False) -> tk.Frame:
+def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ridge", usePrice = True, permanent = False, font=("Segoe UI", 9)) -> tk.Frame:
     global fruitIcon
     fruitName = fruitName.lower()
 
@@ -40,8 +40,8 @@ def fruitLabel(root, fruitName = "rocket", width = 75, height = 75, relief = "ri
     picLabel.image = fruitIcon
     fruitNameText = fruitName.capitalize()
     if permanent: fruitNameText += " (Perm)"
-    nameLabel = tk.Label(frame, text=fruitNameText)
-    priceLabel = tk.Label(frame, text=fruitPriceString, fg="green")
+    nameLabel = tk.Label(frame, text=fruitNameText, font=font)
+    priceLabel = tk.Label(frame, text=fruitPriceString, fg="green", font=font)
  
     picLabel.pack()
     nameLabel.pack()
