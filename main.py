@@ -22,6 +22,24 @@ saveFruitValues()
 ############ STOCK FRAME ############
 ############ STOCK FRAME ############
 ############ STOCK FRAME ############
+def stockLoop():
+    global CFRUITS, LFRUITS, BLFRUITS
+
+    timeTillRestock = getTimeTillRestock()
+    timeTillRestockLabel.config(text="Time till restock: "+str(timeTillRestock).split(".")[0])
+
+    if int(timeTillRestock.total_seconds()) % (60*5) == 0:
+        print("Updating fruit stock")
+
+        CFRUITS = getCurrentFruits()
+        LFRUITS = getLastFruits()
+        BLFRUITS = getBeforeLastFruits()
+
+        updateStockFrame()
+
+    root.after(1, stockLoop)
+
+
 def updateStockFrame():
     global CFRUITLABELS
 
@@ -34,23 +52,7 @@ def updateStockFrame():
         CFRUITLABELS.append(fruitLabel(stockFrame, fruit.name, usePrice=True))
 
     for i, fl in enumerate(CFRUITLABELS):
-        fl.grid(row=floor(i/2)+1, column=int((not i%2 == 0)))
-
-
-def stockLoop():
-    global CFRUITS, LFRUITS, BLFRUITS
-
-    timeTillRestock = getTimeTillRestock()
-    timeTillRestockLabel.config(text="Time till restock: "+str(timeTillRestock).split(".")[0])
-
-    if int(timeTillRestock.total_seconds()) % (60*5) == 0:
-        print("Updating fruit stock")
-        CFRUITS = getCurrentFruits()
-        LFRUITS = getLastFruits()
-        BLFRUITS = getBeforeLastFruits()
-        updateStockFrame()
-
-    root.after(1, stockLoop)
+        fl.grid(row=floor(i/2)+1, column=int((not i%2 == 0)), pady=(0,5))
 
 
 def toggleLastStock():
@@ -73,7 +75,7 @@ def toggleLastStock():
             LFRUITLABELS.append(fruitLabel(lFrame, fruit.name, usePrice=True))
         
         for i, fl in enumerate(LFRUITLABELS):
-            fl.grid(row=floor(i/2)+1, column=int((not i%2 == 0)), padx=(7,3), pady=(5,1))
+            fl.grid(row=floor(i/2)+1, column=int((not i%2 == 0)), padx=7, pady=(5,1))
 
         #Place lFrame
         lFrame.columnconfigure(0, weight=1, uniform="lframe")
@@ -115,7 +117,7 @@ def toggleBLastStock():
             BLFRUITLABELS.append(fruitLabel(blFrame, fruit.name, usePrice=True))
         
         for i, fl in enumerate(BLFRUITLABELS):
-            fl.grid(row=floor(i/2)+1, column=int((not i%2 == 0)), padx=(7,3), pady=(5,1))
+            fl.grid(row=floor(i/2)+1, column=int((not i%2 == 0)), padx=7, pady=(5,1))
 
         #Place blFrame
         blFrame.columnconfigure(0, weight=1, uniform="blframe")
@@ -139,6 +141,17 @@ def toggleBLastStock():
 #----FRUIT STOCK--------~
 STOCKBG = "#90A4AE"
 
+CFRUITLABELS = list()
+LFRUITLABELS = list()
+BLFRUITLABELS = list()
+#CFRUITS = getCurrentFruits()
+CFRUITS = [bloxfruit("kitsune"),bloxfruit("shadow"),bloxfruit("leopard"),bloxfruit("buddha"),bloxfruit("gravity"),bloxfruit("pain"),bloxfruit("sound")]
+LFRUITS = getLastFruits()
+BLFRUITS = getBeforeLastFruits()
+lastVisible = False
+blastVisible = False
+
+#Gui elements
 stockFrame = tk.Frame(root, relief="groove", borderwidth=3, width=200, background=STOCKBG)
 stockFrame.grid(column=0, row=0, sticky=tk.N+tk.W+tk.S)
 stockFrame.grid_propagate(False)
@@ -152,18 +165,9 @@ root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
 lastStockButton = tk.Button(stockFrame, text="Toggle Last stock", command=toggleLastStock, padx=100, bg="white")
-lastStockButton.grid(row=100, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
+lastStockButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
 blastStockButton = tk.Button(stockFrame, text="Toggle Before Last stock", command=toggleBLastStock, padx=100, bg="white")
-blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
-
-CFRUITLABELS = list()
-LFRUITLABELS = list()
-BLFRUITLABELS = list()
-CFRUITS = getCurrentFruits()
-LFRUITS = getLastFruits()
-BLFRUITS = getBeforeLastFruits()
-lastVisible = False
-blastVisible = False
+blastStockButton.grid(row=102, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
 
 updateStockFrame()
 
