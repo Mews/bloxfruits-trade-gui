@@ -197,6 +197,13 @@ class StockFrame(ScrolledFrame):
         self.after(1, self.timeRemainingLoop)
 
 
+    def bindAllToScrollWheel(self, parent):
+        #Recursively bind all widgets in parent to scroll wheel
+        for widget in parent.winfo_children():
+            self.bindAllToScrollWheel(widget)
+        self.bind_scroll_wheel(parent)
+
+
 #Fruit labels
     def updateCurrentFruits(self):
         #Destroy previous fruit labels
@@ -259,10 +266,3 @@ class StockFrame(ScrolledFrame):
         elif self.blVisible:
             self.blVisible = False
             self.blFrame.grid_forget()
-
-    
-#Bind all widgets in self to scroll wheel
-    def bindAllToScrollWheel(self, parent):
-        for widget in parent.winfo_children():
-            self.bindAllToScrollWheel(widget)
-        self.bind_scroll_wheel(parent)
