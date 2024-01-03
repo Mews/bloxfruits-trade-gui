@@ -2,16 +2,20 @@ import tkinter as tk
 from PIL import ImageTk, Image
 import os
 from datetime import datetime
+from tkscrolledframe import ScrolledFrame
+from multiprocessing.dummy import Process, Queue
 try:
     from value import getFruitValue
     from bloxfruit import getFruitProperty
     from trade import trade
     from config import getConfig
+    from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
     from .bloxfruit import getFruitProperty
     from .trade import trade
     from .config import getConfig
+    from .stock import getFruitStockInParalel, getTimeTillRestock
 
 #Fonts
 #Cascadia Code
@@ -64,6 +68,9 @@ def fruitLabel(root,
     return frame
 
 
+
+
+
 def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)) -> tk.Frame:
     global authorPfp
 
@@ -112,3 +119,150 @@ def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)
     pfpLabel.image = authorPfp
 
     return mainframe
+
+
+
+
+
+
+class StockFrame(ScrolledFrame):
+    BG = "#90A4AE"
+
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+
+        #Create variables
+        self.lVisible = False
+        self.blVisible = False
+
+        self.cFruitLabels = list()
+        self.lFruitLabels = list()
+        self.blFruitLabels = list()
+
+        self.cFruits = list()
+        self.lFruits = list()
+        self.blFruits = list()
+        self.cFruits, self.lFruits, self.blFruits = getFruitStockInParalel()
+
+        #Create queues and process for threading
+        self.QUEUES = [Queue() for i in range(3)]
+        #self.p = Process(target=)
+
+        #Create Frame inside parent ScrolledFrame
+        self.mainFrame = self.display_widget(tk.Frame, fit_width=True)
+        self.mainFrame.config(borderwidth=3, background=self.BG, height=1500)
+        self.mainFrame.grid_propagate(False)
+        self.mainFrame.columnconfigure(0, weight=1, uniform="stockframe")
+        self.mainFrame.columnconfigure(1, weight=1, uniform="stockframe")
+
+        #Create and place Label that displays time till restock
+        self.timeTillRestockLabel = tk.Label(self.mainFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg="white", relief="ridge", borderwidth=2, padx=5, pady=2)
+        self.timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
+
+        #Create and place Buttons that toggle last and before last stock
+        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=100, bg="white")
+        self.lButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
+
+        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=100, bg="white")
+        self.blButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
+
+        #Create lFrame and blFrame
+        self.lFrame = tk.Frame(self.mainFrame, bg=self.BG)
+        self.lFrame.columnconfigure(0, weight=1, uniform="lframe")
+        self.lFrame.columnconfigure(1, weight=1, uniform="lframe")
+
+        self.blFrame = tk.Frame(self.mainFrame, bg=self.BG)
+        self.blFrame.columnconfigure(0, weight=1, uniform="blframe")
+        self.blFrame.columnconfigure(1, weight=1, uniform="blframe")
+
+        #Start loops
+        self.mainLoop()
+        self.timeRemainingLoop()
+
+
+#Loops
+    def mainLoop(self):
+        self.updateCurrentFruits()
+        self.updatelFrame()
+        self.updateblFrame()
+
+        self.bindAllToScrollWheel(self)
+
+        self.after(60*5*1000, self.mainLoop)
+
+
+    def timeRemainingLoop(self):
+        self.timeTillRestockLabel.config(text="Time till restock: "+str(getTimeTillRestock()).split(".")[0])
+
+        self.after(1, self.timeRemainingLoop)
+
+
+#Fruit labels
+    def updateCurrentFruits(self):
+        #Destroy previous fruit labels
+        for fl in self.cFruitLabels: 
+            fl.destroy()
+
+        self.cFruitLabels.clear()
+
+        #Create new fruit labels and place them
+        for fruit in self.cFruits:
+            self.cFruitLabels.append(fruitLabel(self.mainFrame, fruit.name, usePrice=True))
+
+        for i, fl in enumerate(self.cFruitLabels):
+            fl.grid(row=(i//2)+1, column=int((not i%2 == 0)), pady=(0,5))
+    
+    def updatelFrame(self):
+        #Destroy previous fruit labels in lFrame
+        for fl in self.lFruitLabels: 
+                fl.destroy()
+
+        self.lFruitLabels.clear()
+
+        #Create new fruit labels and place them
+        for fruit in self.lFruits:
+            self.lFruitLabels.append(fruitLabel(self.lFrame, fruit.name, usePrice=True))
+
+        for i, fl in enumerate(self.lFruitLabels):
+            fl.grid(row=(i//2)+1, column=int((not i%2 == 0)), padx=7, pady=(5,1))
+
+    def updateblFrame(self):
+        #Destroy previous fruit labels in blFrame
+        for fl in self.blFruitLabels: 
+            fl.destroy()
+
+        self.blFruitLabels.clear()
+
+        #Create new fruit labels and place them
+        for fruit in self.blFruits:
+            self.blFruitLabels.append(fruitLabel(self.blFrame, fruit.name, usePrice=True))
+
+        for i, fl in enumerate(self.blFruitLabels):
+            fl.grid(row=(i//2)+1, column=int((not i%2 == 0)), padx=7, pady=(5,1))
+
+
+#Toggle last and before last stocks
+    def toggleLastStock(self):
+        if not self.lVisible:
+            self.lVisible = True
+            self.lFrame.grid(row=101, column=0, columnspan=2, sticky=tk.W)
+
+        elif self.lVisible:
+            self.lVisible = False
+            self.lFrame.grid_forget()
+        
+    def toggleBlastStock(self):
+        if not self.blVisible:
+            self.blVisible = True
+            self.blFrame.grid(row=103, column=0, columnspan=2, sticky=tk.W)
+
+        elif self.blVisible:
+            self.blVisible = False
+            self.blFrame.grid_forget()
+
+    
+#Bind all widgets in self to scroll wheel
+    def bindAllToScrollWheel(self, parent):
+        for widget in parent.winfo_children():
+            self.bindAllToScrollWheel(widget)
+        self.bind_scroll_wheel(parent)
