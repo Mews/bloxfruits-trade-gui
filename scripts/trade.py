@@ -5,7 +5,6 @@ import dateutil.parser as dateparser
 from PIL import Image, ImageOps, ImageDraw, UnidentifiedImageError
 from io import BytesIO
 from datetime import datetime, timedelta
-from math import floor
 import json
 try:
     from bloxfruit import bloxfruit
@@ -74,11 +73,11 @@ class trade():
         timeDelta = datetime.now()-naivePostTime
         
         totalSeconds = int(timeDelta.total_seconds())
-        days = floor(totalSeconds / (24*60*60))
+        days = totalSeconds // (24*60*60)
         totalSeconds -= days*24*60*60
-        hours = floor(totalSeconds / (60*60))
+        hours = totalSeconds // (60*60)
         totalSeconds -= hours*60*60
-        minutes = floor(totalSeconds / 60)
+        minutes = totalSeconds // 60
         totalSeconds -= minutes*60
         seconds = totalSeconds
 
@@ -90,11 +89,11 @@ class trade():
         
         totalSeconds = int(timeDelta.total_seconds())
     
-        days = floor(totalSeconds / (24*60*60))
+        days = totalSeconds // (24*60*60)
         totalSeconds -= days*24*60*60
-        hours = floor(totalSeconds / (60*60))
+        hours = totalSeconds // (60*60)
         totalSeconds -= hours*60*60
-        minutes = floor(totalSeconds / 60)
+        minutes = totalSeconds // 60
         totalSeconds -= minutes*60
         seconds = totalSeconds
 
