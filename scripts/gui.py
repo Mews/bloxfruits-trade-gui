@@ -12,7 +12,7 @@ try:
     from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
-    from .bloxfruit import getFruitProperty
+    from .bloxfruit import getFruitProperty, bloxfruit
     from .trade import trade
     from .config import getConfig
     from .stock import getFruitStockInParalel, getTimeTillRestock
@@ -131,6 +131,9 @@ class StockFrame(ScrolledFrame):
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
 
+        #Set canvas background color
+        self._canvas.config(bg=self.BG)
+
         #Create variables
         self.lVisible = False
         self.blVisible = False
@@ -150,10 +153,10 @@ class StockFrame(ScrolledFrame):
 
         #Create Frame inside parent ScrolledFrame
         self.mainFrame = self.display_widget(tk.Frame, fit_width=True)
-        self.mainFrame.config(borderwidth=3, background=self.BG, height=1500)
+        self.mainFrame.config(borderwidth=3, background=self.BG)
         self.mainFrame.grid_propagate(False)
-        self.mainFrame.columnconfigure(0, weight=1, uniform="stockframe")
-        self.mainFrame.columnconfigure(1, weight=1, uniform="stockframe")
+        self.mainFrame.columnconfigure(0, weight=1, uniform="mainframe")
+        self.mainFrame.columnconfigure(1, weight=1, uniform="mainframe")
 
         #Create and place Label that displays time till restock
         self.timeTillRestockLabel = tk.Label(self.mainFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg="white", relief="ridge", borderwidth=2, padx=5, pady=2)
@@ -179,12 +182,13 @@ class StockFrame(ScrolledFrame):
         self.mainLoop()
         self.timeRemainingLoop()
 
-
 #Loops
     def mainLoop(self):
         self.updateCurrentFruits()
         self.updatelFrame()
         self.updateblFrame()
+
+        self.after(0, self.updateHeight)
 
         self.bindAllToScrollWheel(self)
 
@@ -203,6 +207,19 @@ class StockFrame(ScrolledFrame):
             self.bindAllToScrollWheel(widget)
         self.bind_scroll_wheel(parent)
 
+
+    def updateHeight(self):
+        #Updates mainFrame height
+        self.mainFrame.grid_propagate(True)
+
+        self.mainFrame.update_idletasks()
+
+        reqHeight = self.mainFrame.winfo_reqheight()
+        if reqHeight < self.winfo_height(): reqHeight = self.winfo_height()-2
+
+        self.mainFrame.grid_propagate(False)
+
+        self.mainFrame.config(height=reqHeight)
 
 #Fruit labels
     def updateCurrentFruits(self):
@@ -258,6 +275,8 @@ class StockFrame(ScrolledFrame):
             self.lVisible = False
             self.lFrame.grid_forget()
         
+        self.updateHeight()
+        
     def toggleBlastStock(self):
         if not self.blVisible:
             self.blVisible = True
@@ -266,3 +285,5 @@ class StockFrame(ScrolledFrame):
         elif self.blVisible:
             self.blVisible = False
             self.blFrame.grid_forget()
+
+        self.updateHeight()
