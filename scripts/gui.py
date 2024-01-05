@@ -31,11 +31,12 @@ def fruitLabel(root,
                usePrice = True, 
                permanent = False, 
                font=("Segoe UI", 9), 
-               useRarityColors = True) -> tk.Frame:
+               useRarityColors = True,
+               background="#D2D2D2") -> tk.Frame:
     global fruitIcon
     fruitName = fruitName.lower()
 
-    frame = tk.Frame(root, borderwidth=2, relief=relief)
+    frame = tk.Frame(root, borderwidth=2, relief=relief, bg=background)
 
     fruitIcon = ImageTk.PhotoImage(Image.open("assets/"+fruitName+".png").resize( (width,height) ))
 
@@ -60,7 +61,10 @@ def fruitLabel(root,
 
     nameLabel = tk.Label(frame, text=fruitNameText, font=font, fg=fg)
     priceLabel = tk.Label(frame, text=fruitPriceString, fg="green", font=font)
- 
+    
+    for child in frame.winfo_children():
+        child.config(bg=background)
+
     picLabel.pack()
     nameLabel.pack()
     priceLabel.pack()
@@ -126,13 +130,18 @@ def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)
 
 
 class StockFrame(ScrolledFrame):
-    BG = "#90A4AE"
+    BG = "#373737"
+    SBG = "#606060"
+    BPBG = "#959595"
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
 
         #Set canvas background color
         self._canvas.config(bg=self.BG)
+
+        #Set scrollbar background color
+        self._y_scrollbar.config(bg=self.SBG)
 
         #Create variables
         self.lVisible = False
@@ -159,14 +168,14 @@ class StockFrame(ScrolledFrame):
         self.mainFrame.columnconfigure(1, weight=1, uniform="mainframe")
 
         #Create and place Label that displays time till restock
-        self.timeTillRestockLabel = tk.Label(self.mainFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg="white", relief="ridge", borderwidth=2, padx=5, pady=2)
+        self.timeTillRestockLabel = tk.Label(self.mainFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg=self.SBG, relief="ridge", borderwidth=2, padx=5, pady=2, fg="white")
         self.timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
 
         #Create and place Buttons that toggle last and before last stock
-        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=100, bg="white")
+        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=100, bg=self.SBG, activebackground=self.BPBG, fg="white")
         self.lButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
 
-        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=100, bg="white")
+        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=100, bg=self.SBG, activebackground=self.BPBG, fg="white")
         self.blButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
 
         #Create lFrame and blFrame
@@ -184,18 +193,23 @@ class StockFrame(ScrolledFrame):
 
 #Loops
     def mainLoop(self):
+        #Update fruit labels
         self.updateCurrentFruits()
         self.updatelFrame()
         self.updateblFrame()
 
+        #Update main frame height
         self.after(0, self.updateHeight)
 
+        #Bing all new widgets to scroll wheel
         self.bindAllToScrollWheel(self)
 
-        self.after(60*5*1000, self.mainLoop)
+        #Start loop again after 5 minutes
+        self.after(5*60*1000, self.mainLoop)
 
 
     def timeRemainingLoop(self):
+        #Updates time till restock label constantly
         self.timeTillRestockLabel.config(text="Time till restock: "+str(getTimeTillRestock()).split(".")[0])
 
         self.after(1, self.timeRemainingLoop)
@@ -274,7 +288,7 @@ class StockFrame(ScrolledFrame):
         elif self.lVisible:
             self.lVisible = False
             self.lFrame.grid_forget()
-        
+    
         self.updateHeight()
         
     def toggleBlastStock(self):
