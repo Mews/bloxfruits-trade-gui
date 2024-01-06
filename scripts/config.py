@@ -40,7 +40,7 @@ def RESTOREDEFAULTCONFIG():
     #Rarity colors
     CONFIGS["raritycolors"] = {
         "common":"#000000",
-        "uncommon": "#5E8BD6",
+        "uncommon": "#1976D2",
         "rare": "#8B55FB",
         "legendary": "#D12DDF",
         "mythical": "#EA3131",
