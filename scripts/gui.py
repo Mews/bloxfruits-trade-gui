@@ -494,12 +494,18 @@ class FruitSelector(ScrolledFrame):
             self.changeFrameColor(self.selectedFrame, ACTIVEBG)
             self.checkbox.pack_forget()
 
-        self.selectedFrame = fl
+        #If clicked on already selected frame, set selected frame to None
+        if self.selectedFrame is fl:
+            self.selectedFrame = None
 
-        self.changeFrameColor(self.selectedFrame, SELECTEDBG)
+        else:
+            #Update selected frame
+            self.selectedFrame = fl
 
-        self.checkbox = tk.Checkbutton(self.selectedFrame, text="Perm?", selectcolor="white", fg="black", bg=SELECTEDBG, activebackground=SELECTEDBG, variable=self.permanent)
-        self.checkbox.pack()
+            self.changeFrameColor(self.selectedFrame, SELECTEDBG)
+
+            self.checkbox = tk.Checkbutton(self.selectedFrame, text="Perm?", selectcolor="white", fg="black", bg=SELECTEDBG, activebackground=SELECTEDBG, variable=self.permanent)
+            self.checkbox.pack()
 
 
     def bindAllToScrollWheel(self, parent):
