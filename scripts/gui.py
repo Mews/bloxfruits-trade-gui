@@ -24,6 +24,10 @@ except:
 #Lucida Console
 #Malgun gothic
 
+BG = "#373737"
+SBG = "#606060"
+ACTIVEBG = "#959595"
+
 
 def fruitLabel(root, 
                fruitName = "rocket", 
@@ -131,18 +135,14 @@ def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)
 
 
 class StockFrame(ScrolledFrame):
-    BG = "#373737"
-    SBG = "#606060"
-    BPBG = "#959595"
-
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
 
         #Set canvas background color
-        self._canvas.config(bg=self.BG)
+        self._canvas.config(bg=BG)
 
         #Set scrollbar background color
-        self._y_scrollbar.config(bg=self.SBG)
+        self._y_scrollbar.config(bg=SBG)
 
         #Create variables
         self.lVisible = False
@@ -161,33 +161,33 @@ class StockFrame(ScrolledFrame):
 
         #Create Frame inside parent ScrolledFrame
         self.mainFrame = self.display_widget(tk.Frame, fit_width=True)
-        self.mainFrame.config(borderwidth=3, background=self.BG)
+        self.mainFrame.config(borderwidth=3, background=BG)
         self.mainFrame.grid_propagate(False)
         self.mainFrame.columnconfigure(0, weight=1, uniform="mainframe")
         self.mainFrame.columnconfigure(1, weight=1, uniform="mainframe")
 
         #Create and place Label that displays time till restock
-        self.timeTillRestockLabel = tk.Label(self.mainFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg=self.SBG, relief="ridge", borderwidth=2, padx=5, pady=2, fg="white")
+        self.timeTillRestockLabel = tk.Label(self.mainFrame, text="", anchor=tk.W, font=("Segoe UI", 10), bg=SBG, relief="ridge", borderwidth=2, padx=5, pady=2, fg="white")
         self.timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
 
         #Create and place Buttons that toggle last and before last stock
-        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=100, bg=self.SBG, activebackground=self.BPBG, fg="white")
+        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=100, bg=SBG, activebackground=ACTIVEBG, fg="white")
         self.lButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
 
-        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=100, bg=self.SBG, activebackground=self.BPBG, fg="white")
+        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=100, bg=SBG, activebackground=ACTIVEBG, fg="white")
         self.blButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
 
         #Create lFrame and blFrame
-        self.lFrame = tk.Frame(self.mainFrame, bg=self.BG)
+        self.lFrame = tk.Frame(self.mainFrame, bg=BG)
         self.lFrame.columnconfigure(0, weight=1, uniform="lframe")
         self.lFrame.columnconfigure(1, weight=1, uniform="lframe")
 
-        self.blFrame = tk.Frame(self.mainFrame, bg=self.BG)
+        self.blFrame = tk.Frame(self.mainFrame, bg=BG)
         self.blFrame.columnconfigure(0, weight=1, uniform="blframe")
         self.blFrame.columnconfigure(1, weight=1, uniform="blframe")
 
         #Create labels to signal worker function is still running
-        self.waitingLabel = tk.Label(self.mainFrame, text="Waiting for data...", anchor=tk.CENTER, bg=self.BG, fg="white")
+        self.waitingLabel = tk.Label(self.mainFrame, text="Waiting for data...", anchor=tk.CENTER, bg=BG, fg="white")
 
         #Start loops
         self.mainLoop()
