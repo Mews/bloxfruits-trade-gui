@@ -7,13 +7,13 @@ from multiprocessing.dummy import Process
 import queue
 try:
     from value import getFruitValue
-    from bloxfruit import getFruitProperty, readFruitData, bloxfruit
+    from bloxfruit import getFruitProperty, readFruitData, bloxfruit, fruitFromSerialized
     from trade import trade
     from config import getConfig
     from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
-    from .bloxfruit import getFruitProperty, readFruitData, bloxfruit
+    from .bloxfruit import getFruitProperty, readFruitData, bloxfruit, fruitFromSerialized
     from .trade import trade
     from .config import getConfig
     from .stock import getFruitStockInParalel, getTimeTillRestock
@@ -86,6 +86,13 @@ def fruitLabel(root,
 
 
 
+
+
+
+
+
+
+
 def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)) -> tk.Frame:
     global authorPfp
 
@@ -134,6 +141,17 @@ def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)
     pfpLabel.image = authorPfp
 
     return mainframe
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -357,6 +375,16 @@ class StockFrame(ScrolledFrame):
 
 
 
+
+
+
+
+
+
+
+
+
+
 class FruitSelector(ScrolledFrame):
     INVALIDNAMES = getConfig("invalidnames")
 
@@ -368,7 +396,7 @@ class FruitSelector(ScrolledFrame):
         self.picHeight = picHeight
 
         #Set canvas background color
-        self._canvas.config(bg=BG)
+        self.config(bg=BG)
 
         #Set scrollbar background color
         self._y_scrollbar.config(bg=SBG)
@@ -400,6 +428,10 @@ class FruitSelector(ScrolledFrame):
             self.bindChildrenToButton1(fl)
 
             fl.update_idletasks()
+
+        #Create dummy button
+        self.button = tk.Button(self, text="Add Fruit", bg=SBG, activebackground=ACTIVEBG, fg="white", padx=25)
+        self.button.grid(row=1000, column=0, sticky=tk.S+tk.W, padx=5, pady=3)
 
         self.normalizeLabelSize()
 
@@ -463,8 +495,10 @@ class FruitSelector(ScrolledFrame):
             self.checkbox.pack_forget()
 
         self.selectedFrame = fl
+
         self.changeFrameColor(self.selectedFrame, SELECTEDBG)
-        self.checkbox = tk.Checkbutton(self.selectedFrame, text="Permanent?", selectcolor="white", fg="black", bg=SELECTEDBG, activebackground=SELECTEDBG, variable=self.permanent)
+
+        self.checkbox = tk.Checkbutton(self.selectedFrame, text="Perm?", selectcolor="white", fg="black", bg=SELECTEDBG, activebackground=SELECTEDBG, variable=self.permanent)
         self.checkbox.pack()
 
 
@@ -482,3 +516,19 @@ class FruitSelector(ScrolledFrame):
         del self
 
         return bloxfruit(fruitName, permanent=permanent)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
