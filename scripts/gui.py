@@ -201,9 +201,6 @@ class StockFrame(ScrolledFrame):
         #Update main frame height
         self.after(0, self.updateHeight)
 
-        #Bing all new widgets to scroll wheel
-        self.bindAllToScrollWheel(self)
-
         #Start loop again after 5 minutes
         self.after(5*60*1000, self.mainLoop)
 
@@ -264,6 +261,9 @@ class StockFrame(ScrolledFrame):
             self.updateCurrentFruits()
             self.updatelFrame()
             self.updateblFrame()
+
+            #Bind all new widgets to scroll wheel
+            self.bindAllToScrollWheel(self)
 
         except queue.Empty:
             #Check if there is no fruit data
