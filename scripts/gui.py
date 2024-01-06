@@ -508,12 +508,9 @@ class FruitSelector(ScrolledFrame):
             self.bindAllToScrollWheel(widget)
         self.bind_scroll_wheel(parent)
 
-    def returnAndDelete(self):
+    def getFruit(self):
         fruitName = self.selectedFrame.winfo_children()[1].cget("text")
         permanent = self.permanent.get()
-
-        self.destroy()
-        del self
 
         return bloxfruit(fruitName, permanent=permanent)
     
