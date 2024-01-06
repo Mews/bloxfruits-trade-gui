@@ -360,8 +360,12 @@ class StockFrame(ScrolledFrame):
 class FruitSelector(ScrolledFrame):
     INVALIDNAMES = getConfig("invalidnames")
 
-    def __init__(self, master, **kw):
+    def __init__(self, master, columns=3, picWidth=100, picHeight=100, **kw):
         super().__init__(master=master, **kw)
+
+        self.columns = columns
+        self.picWidth = picWidth
+        self.picHeight = picHeight
 
         #Set canvas background color
         self._canvas.config(bg=BG)
@@ -374,6 +378,8 @@ class FruitSelector(ScrolledFrame):
         self.fruitLabels = list()
         self.mainFrame = self.display_widget(tk.Frame, fit_width=True, bg=BG)
 
+        #for i in range(self.columns): self.mainFrame.columnconfigure(i, weight=1)
+
         self.selectedFrame = None
 
         self.checkbox = None
@@ -382,36 +388,54 @@ class FruitSelector(ScrolledFrame):
         #Create fruit label for each fruit in fruit data
         for fruitName in self.fruitData:
             if not fruitName in self.INVALIDNAMES:
-                self.fruitLabels.append(fruitLabel(self.mainFrame, fruitName, usePrice=True, width=100, height=100, font=("Segoe UI", 0), background=ACTIVEBG))
+                self.fruitLabels.append(fruitLabel(self.mainFrame, fruitName, usePrice=True, width=self.picWidth, height=self.picHeight, font=("Segoe UI", 0), background=ACTIVEBG))
 
 
         #Place fruit labels
         for i, fl in enumerate(self.fruitLabels):
-            row, column = divmod(i, 3)
+            row, column = divmod(i, self.columns)
+
             fl.grid(row=row, column=column, padx=5, pady=5)
 
             self.bindChildrenToButton1(fl)
 
             fl.update_idletasks()
 
-            #Change height of fruit label if neighboring fruit label is taller
-            previousFl = self.fruitLabels[i-1]
+        self.normalizeLabelSize()
 
-            if column > 0 and previousFl.winfo_height() < fl.winfo_height():
-                previousFl.config(pady=(fl.winfo_height() - previousFl.winfo_height())/2 )
-
-            if column > 0 and previousFl.winfo_height() > fl.winfo_height():
-                fl.config(pady=(previousFl.winfo_height() - fl.winfo_height())/2 )
-
-        
         #Start loop
         self.mainLoop()
 
 
     def mainLoop(self):
-        #self.after(1, self.mainLoop)
         self.bindAllToScrollWheel(self)
-        pass
+        self.after(100, self.mainLoop)
+
+    
+    def normalizeLabelSize(self):
+        #Figure out fruit label with most width
+        maxWidth = int()
+        for fl in self.fruitLabels:
+            if fl.winfo_width() > maxWidth:
+                maxWidth = fl.winfo_width()
+
+        #Change all fruit labels to have width of maxWidth
+        for fl in self.fruitLabels:
+            fl.config(padx=(maxWidth-fl.winfo_width())/2)
+
+        #Change height of fruit label based on tallest fruit label in row
+        for i in range(0, len(self.fruitLabels), self.columns):
+            rowLabels = self.fruitLabels[i:i+self.columns]
+            maxHeight = int()
+
+            #Find tallest label in row
+            for fl in rowLabels:
+                if fl.winfo_height() > maxHeight:
+                    maxHeight = fl.winfo_height()
+            
+            #Configure label height
+            for fl in rowLabels:
+                fl.config(pady=(maxHeight-fl.winfo_height())/2)
 
 
     def bindChildrenToButton1(self, parent):
