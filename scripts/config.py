@@ -26,6 +26,17 @@ def RESTOREDEFAULTCONFIG():
         ["5x legendary scrolls", "legendary scrolls"]
     ]
     
+    #INVALID ITEM NAMES (items with these names will be skipped in FruitSelector)
+    CONFIGS["invalidnames"] = [
+        "kilo",
+        "revive",
+        "door",
+        "string",
+        "paw",
+        "soul",
+        "meme"
+    ]
+
     #Rarity colors
     CONFIGS["raritycolors"] = {
         "common":"#000000",
@@ -33,7 +44,7 @@ def RESTOREDEFAULTCONFIG():
         "rare": "#8B55FB",
         "legendary": "#D12DDF",
         "mythical": "#EA3131",
-        "premium": "#FCCB00"
+        "premium": "#FB9E00"
     }
 
     #Colors for gui elements
