@@ -7,13 +7,13 @@ from multiprocessing.dummy import Process
 import queue
 try:
     from value import getFruitValue
-    from bloxfruit import getFruitProperty
+    from bloxfruit import getFruitProperty, readFruitData
     from trade import trade
     from config import getConfig
     from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
-    from .bloxfruit import getFruitProperty, bloxfruit
+    from .bloxfruit import getFruitProperty, readFruitData
     from .trade import trade
     from .config import getConfig
     from .stock import getFruitStockInParalel, getTimeTillRestock
@@ -50,6 +50,9 @@ def fruitLabel(root,
         fruitPrice = getFruitProperty(fruitName, "price")
         fruitPriceString = "$"+f'{fruitPrice:,}'
 
+    elif usePrice and getFruitProperty(fruitName, "price") == None:
+        fruitPriceString = "N/A"
+
     else:
         fruitPrice = getFruitValue(fruitName)
         fruitPriceString = "$"+f'{fruitPrice:,}'
@@ -65,7 +68,7 @@ def fruitLabel(root,
     if useRarityColors: fg = getConfig("raritycolors")[getFruitProperty(fruitName, "rarity")]
     else: fg = "black"
 
-    nameLabel = tk.Label(frame, text=fruitNameText, font=font, fg=fg)
+    nameLabel = tk.Label(frame, text=fruitNameText, font=font, fg=fg, wraplength=picLabel.winfo_reqwidth())
     priceLabel = tk.Label(frame, text=fruitPriceString, fg="green", font=font)
     
     for child in frame.winfo_children():
@@ -137,7 +140,7 @@ def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)
 
 class StockFrame(ScrolledFrame):
     def __init__(self, master, **kw):
-        super().__init__(master, **kw)
+        super().__init__(master=master, **kw)
 
         #Set canvas background color
         self._canvas.config(bg=BG)
