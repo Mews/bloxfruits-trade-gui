@@ -51,7 +51,8 @@ def RESTOREDEFAULTCONFIG():
     CONFIGS["guicolors"] = {
         "bg":"#373737",
         "secondarybg":"#606060",
-        "activebuttonbg":"#959595"
+        "activebuttonbg":"#959595",
+        "selectedbg": "#abb8c3"
     }
 
     #URLS
