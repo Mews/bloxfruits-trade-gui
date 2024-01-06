@@ -7,13 +7,13 @@ from multiprocessing.dummy import Process
 import queue
 try:
     from value import getFruitValue
-    from bloxfruit import getFruitProperty, readFruitData
+    from bloxfruit import getFruitProperty, readFruitData, bloxfruit
     from trade import trade
     from config import getConfig
     from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
-    from .bloxfruit import getFruitProperty, readFruitData
+    from .bloxfruit import getFruitProperty, readFruitData, bloxfruit
     from .trade import trade
     from .config import getConfig
     from .stock import getFruitStockInParalel, getTimeTillRestock
@@ -28,13 +28,15 @@ guiColors = getConfig("guicolors")
 BG = guiColors["bg"]
 SBG = guiColors["secondarybg"]
 ACTIVEBG = guiColors["activebuttonbg"]
+SELECTEDBG = guiColors["selectedbg"]
 
 
 def fruitLabel(root, 
                fruitName = "rocket", 
                width = 75, height = 75, 
                relief = "ridge", 
-               usePrice = True, 
+               usePrice = True,
+               useValue = False, 
                permanent = False, 
                font=("Segoe UI", 9), 
                useRarityColors = True,
@@ -53,7 +55,7 @@ def fruitLabel(root,
     elif usePrice and getFruitProperty(fruitName, "price") == None:
         fruitPriceString = "N/A"
 
-    else:
+    if useValue:
         fruitPrice = getFruitValue(fruitName)
         fruitPriceString = "$"+f'{fruitPrice:,}'
 
@@ -348,3 +350,111 @@ class StockFrame(ScrolledFrame):
             self.blFrame.grid_forget()
 
         self.updateHeight()
+
+
+
+
+
+
+
+class FruitSelector(ScrolledFrame):
+    INVALIDNAMES = getConfig("invalidnames")
+
+    def __init__(self, master, **kw):
+        super().__init__(master=master, **kw)
+
+        #Set canvas background color
+        self._canvas.config(bg=BG)
+
+        #Set scrollbar background color
+        self._y_scrollbar.config(bg=SBG)
+
+        #Create variables
+        self.fruitData = readFruitData()
+        self.fruitLabels = list()
+        self.mainFrame = self.display_widget(tk.Frame, fit_width=True, bg=BG)
+
+        self.selectedFrame = None
+
+        self.checkbox = None
+        self.permanent = tk.BooleanVar()
+
+        #Create fruit label for each fruit in fruit data
+        for fruitName in self.fruitData:
+            if not fruitName in self.INVALIDNAMES:
+                self.fruitLabels.append(fruitLabel(self.mainFrame, fruitName, usePrice=True, width=100, height=100, font=("Segoe UI", 0), background=ACTIVEBG))
+
+
+        #Place fruit labels
+        for i, fl in enumerate(self.fruitLabels):
+            row, column = divmod(i, 3)
+            fl.grid(row=row, column=column, padx=5, pady=5)
+
+            self.bindChildrenToButton1(fl)
+
+            fl.update_idletasks()
+
+            #Change height of fruit label if neighboring fruit label is taller
+            previousFl = self.fruitLabels[i-1]
+
+            if column > 0 and previousFl.winfo_height() < fl.winfo_height():
+                previousFl.config(pady=(fl.winfo_height() - previousFl.winfo_height())/2 )
+
+            if column > 0 and previousFl.winfo_height() > fl.winfo_height():
+                fl.config(pady=(previousFl.winfo_height() - fl.winfo_height())/2 )
+
+        
+        #Start loop
+        self.mainLoop()
+
+
+    def mainLoop(self):
+        #self.after(1, self.mainLoop)
+        self.bindAllToScrollWheel(self)
+        pass
+
+
+    def bindChildrenToButton1(self, parent):
+        for child in parent.winfo_children():
+            self.bindChildrenToButton1(child)
+        parent.bind("<Button-1>", self.onButton1Click)
+
+    def changeFrameColor(self, frame, color):
+        if not frame == None:
+            for child in frame.winfo_children():
+                self.changeFrameColor(child, color)
+            frame.config(bg=color)
+
+    def onButton1Click(self, event):
+        widgetClicked = event.widget
+        fl = widgetClicked
+
+        if isinstance(widgetClicked, tk.Label):
+            fl = widgetClicked.winfo_parent()
+            fl = self.nametowidget(fl)
+
+        #Deselect previous frame
+        if not self.selectedFrame == None:
+            self.changeFrameColor(self.selectedFrame, ACTIVEBG)
+            self.checkbox.pack_forget()
+
+        self.selectedFrame = fl
+        self.changeFrameColor(self.selectedFrame, SELECTEDBG)
+        self.checkbox = tk.Checkbutton(self.selectedFrame, text="Permanent?", selectcolor="white", fg="black", bg=SELECTEDBG, activebackground=SELECTEDBG, variable=self.permanent)
+        self.checkbox.pack()
+
+
+    def bindAllToScrollWheel(self, parent):
+        #Recursively bind all widgets in parent to scroll wheel
+        for widget in parent.winfo_children():
+            self.bindAllToScrollWheel(widget)
+        self.bind_scroll_wheel(parent)
+
+    def returnAndDelete(self):
+        fruitName = self.selectedFrame.winfo_children()[1].cget("text")
+        permanent = self.permanent.get()
+
+        self.destroy()
+        del self
+
+        return bloxfruit(fruitName, permanent=permanent)
