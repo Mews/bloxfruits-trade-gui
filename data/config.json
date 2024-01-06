@@ -25,6 +25,11 @@
     "mythical": "#EA3131",
     "premium": "#FCCB00"
   },
+  "guicolors": {
+    "bg": "#373737",
+    "secondarybg": "#606060",
+    "activebuttonbg": "#959595"
+  },
   "fruitdataurl": "https://blox-fruits.fandom.com/wiki/Blox_Fruits",
   "gamepassdataurl": "https://blox-fruits.fandom.com/wiki/Shop",
   "stockurl": "https://blox-fruits.fandom.com/wiki/Blox_Fruits_%22Stock%22",

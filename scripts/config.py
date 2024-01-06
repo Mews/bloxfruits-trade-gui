@@ -26,6 +26,7 @@ def RESTOREDEFAULTCONFIG():
         ["5x legendary scrolls", "legendary scrolls"]
     ]
     
+    #Rarity colors
     CONFIGS["raritycolors"] = {
         "common":"#000000",
         "uncommon": "#5E8BD6",
@@ -33,6 +34,13 @@ def RESTOREDEFAULTCONFIG():
         "legendary": "#D12DDF",
         "mythical": "#EA3131",
         "premium": "#FCCB00"
+    }
+
+    #Colors for gui elements
+    CONFIGS["guicolors"] = {
+        "bg":"#373737",
+        "secondarybg":"#606060",
+        "activebuttonbg":"#959595"
     }
 
     #URLS

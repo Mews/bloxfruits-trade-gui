@@ -24,9 +24,10 @@ except:
 #Lucida Console
 #Malgun gothic
 
-BG = "#373737"
-SBG = "#606060"
-ACTIVEBG = "#959595"
+guiColors = getConfig("guicolors")
+BG = guiColors["bg"]
+SBG = guiColors["secondarybg"]
+ACTIVEBG = guiColors["activebuttonbg"]
 
 
 def fruitLabel(root, 
