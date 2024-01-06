@@ -3,7 +3,8 @@ from PIL import ImageTk, Image
 import os
 from datetime import datetime
 from tkscrolledframe import ScrolledFrame
-from multiprocessing.dummy import Process, Queue
+from multiprocessing.dummy import Process
+import queue
 try:
     from value import getFruitValue
     from bloxfruit import getFruitProperty
@@ -154,11 +155,9 @@ class StockFrame(ScrolledFrame):
         self.cFruits = list()
         self.lFruits = list()
         self.blFruits = list()
-        self.cFruits, self.lFruits, self.blFruits = getFruitStockInParalel()
 
-        #Create queues and process for threading
-        self.QUEUES = [Queue() for i in range(3)]
-        #self.p = Process(target=)
+        #Create queues for threading
+        self.resultQueues = [queue.Queue() for i in range(3)]
 
         #Create Frame inside parent ScrolledFrame
         self.mainFrame = self.display_widget(tk.Frame, fit_width=True)
@@ -187,16 +186,17 @@ class StockFrame(ScrolledFrame):
         self.blFrame.columnconfigure(0, weight=1, uniform="blframe")
         self.blFrame.columnconfigure(1, weight=1, uniform="blframe")
 
+        #Create labels to signal worker function is still running
+        self.waitingLabel = tk.Label(self.mainFrame, text="Waiting for data...", anchor=tk.CENTER, bg=self.BG, fg="white")
+
         #Start loops
         self.mainLoop()
         self.timeRemainingLoop()
 
 #Loops
     def mainLoop(self):
-        #Update fruit labels
-        self.updateCurrentFruits()
-        self.updatelFrame()
-        self.updateblFrame()
+        #Update fruit stock in paralel
+        self.startThread()
 
         #Update main frame height
         self.after(0, self.updateHeight)
@@ -234,6 +234,49 @@ class StockFrame(ScrolledFrame):
         self.mainFrame.grid_propagate(False)
 
         self.mainFrame.config(height=reqHeight)
+    
+#Threading functions
+    def worker(self, resultQueues):
+        cFruits, lFruits, blFruits = getFruitStockInParalel()
+        resultQueues[0].put(cFruits)
+        resultQueues[1].put(lFruits)
+        resultQueues[2].put(blFruits)
+
+    def startThread(self):
+        Process(target=self.worker, args=(self.resultQueues, )).start()
+        self.waitForResults()
+
+    def waitForResults(self):
+        try:
+            #Get data from queues
+            self.cFruits = self.resultQueues[0].get_nowait()
+            self.lFruits = self.resultQueues[1].get_nowait()
+            self.blFruits = self.resultQueues[2].get_nowait()
+
+            #Hide waiting label
+            self.waitingLabel.grid_forget()
+
+            #Re-enable buttons
+            self.lButton.config(state=tk.NORMAL)
+            self.blButton.config(state=tk.NORMAL)
+
+            #Update fruit labels with new data
+            self.updateCurrentFruits()
+            self.updatelFrame()
+            self.updateblFrame()
+
+        except queue.Empty:
+            #Check if there is no fruit data
+            if self.cFruits == []:
+                #Display waiting label
+                self.waitingLabel.grid(row=1, column=0, columnspan=2, pady=10, padx=10)
+                
+                #Disable buttons
+                self.lButton.config(state=tk.DISABLED)
+                self.blButton.config(state=tk.DISABLED)
+
+            self.after(100, self.waitForResults)
+            
 
 #Fruit labels
     def updateCurrentFruits(self):
