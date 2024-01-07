@@ -113,7 +113,7 @@ class trade():
         for atribute in ATRIBUTES:
             if not atribute == None:
                 try:
-                    json.dumps(ATRIBUTES[atribute], indent=2)
+                    json.dumps(ATRIBUTES[atribute])
                     data[atribute] = ATRIBUTES[atribute]
                 except:
                     if atribute == "HAS" or atribute == "WANTS":
@@ -123,7 +123,7 @@ class trade():
                     if atribute == "postTime":
                         data[atribute] = str(self.postTime)
         
-        return json.dumps(data, indent=2)
+        return json.dumps(data)
             
     
 
