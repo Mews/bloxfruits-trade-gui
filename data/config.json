@@ -38,7 +38,8 @@
     "bg": "#373737",
     "secondarybg": "#606060",
     "activebuttonbg": "#959595",
-    "selectedbg": "#abb8c3"
+    "selectedbg": "#abb8c3",
+    "fruitlabelbg": "#D2D2D2"
   },
   "fruitdataurl": "https://blox-fruits.fandom.com/wiki/Blox_Fruits",
   "gamepassdataurl": "https://blox-fruits.fandom.com/wiki/Shop",
@@ -54,7 +55,5 @@
     "mythical",
     "gamepass"
   ],
-  "gamepassvaluesurl": "https://www.bloxfruitsvalues.com/gamepass",
-  "INVENTORY": [],
-  "SAVEDTRADES": []
+  "gamepassvaluesurl": "https://www.bloxfruitsvalues.com/gamepass"
 }

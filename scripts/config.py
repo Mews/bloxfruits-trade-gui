@@ -52,7 +52,8 @@ def RESTOREDEFAULTCONFIG():
         "bg":"#373737",
         "secondarybg":"#606060",
         "activebuttonbg":"#959595",
-        "selectedbg": "#abb8c3"
+        "selectedbg": "#abb8c3",
+        "fruitlabelbg": "#D2D2D2"
     }
 
     #URLS
