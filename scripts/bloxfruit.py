@@ -49,6 +49,9 @@ class bloxfruit():
         
         return equal
 
+    def __lt__(self, other):
+        return self.price < other.price
+    
     def serialize(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
