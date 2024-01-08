@@ -38,6 +38,17 @@ class bloxfruit():
     def __str__(self):
         return self.name.capitalize()
     
+    def __eq__(self, other):
+        equal = True
+        selfVars = vars(self)
+        otherVars = vars(other)
+
+        for var in selfVars:
+            if not selfVars[var] == otherVars[var]:
+                equal = False
+        
+        return equal
+
     def serialize(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
