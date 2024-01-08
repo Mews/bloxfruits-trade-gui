@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox as tkmessagebox
 from PIL import ImageTk, Image
 import os
 from datetime import datetime
@@ -9,13 +10,13 @@ try:
     from value import getFruitValue
     from bloxfruit import getFruitProperty, readFruitData, bloxfruit, fruitFromSerialized
     from trade import trade
-    from config import getConfig
+    from config import getConfig, changeConfig
     from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
     from .bloxfruit import getFruitProperty, readFruitData, bloxfruit, fruitFromSerialized
     from .trade import trade
-    from .config import getConfig
+    from .config import getConfig, changeConfig
     from .stock import getFruitStockInParalel, getTimeTillRestock
 
 #Fonts
@@ -29,9 +30,10 @@ BG = guiColors["bg"]
 SBG = guiColors["secondarybg"]
 ACTIVEBG = guiColors["activebuttonbg"]
 SELECTEDBG = guiColors["selectedbg"]
+FLBG = guiColors["fruitlabelbg"]
 
 
-def fruitLabel(root, 
+def fruitLabel(root,
                fruitName = "rocket", 
                width = 75, height = 75, 
                relief = "ridge", 
@@ -40,7 +42,7 @@ def fruitLabel(root,
                permanent = False, 
                font=("Segoe UI", 9), 
                useRarityColors = True,
-               background="#D2D2D2") -> tk.Frame:
+               background=FLBG) -> tk.Frame:
     global fruitIcon
     fruitName = fruitName.lower()
 
@@ -71,14 +73,16 @@ def fruitLabel(root,
     else: fg = "black"
 
     nameLabel = tk.Label(frame, text=fruitNameText, font=font, fg=fg, wraplength=picLabel.winfo_reqwidth())
-    priceLabel = tk.Label(frame, text=fruitPriceString, fg="green", font=font)
+    if not (not usePrice and not useValue): 
+        priceLabel = tk.Label(frame, text=fruitPriceString, fg="green", font=font)
     
     for child in frame.winfo_children():
         child.config(bg=background)
 
     picLabel.pack()
     nameLabel.pack()
-    priceLabel.pack()
+    if not (not usePrice and not useValue): 
+        priceLabel.pack()
 
     return frame
 
@@ -416,7 +420,7 @@ class FruitSelector(ScrolledFrame):
         #Create fruit label for each fruit in fruit data
         for fruitName in self.fruitData:
             if not fruitName in self.INVALIDNAMES:
-                self.fruitLabels.append(fruitLabel(self.mainFrame, fruitName, usePrice=True, width=self.picWidth, height=self.picHeight, font=("Segoe UI", 0), background=ACTIVEBG))
+                self.fruitLabels.append(fruitLabel(self.mainFrame, fruitName, usePrice=False, width=self.picWidth, height=self.picHeight, font=("Segoe UI", 0)))
 
 
         #Place fruit labels
@@ -491,7 +495,7 @@ class FruitSelector(ScrolledFrame):
 
         #Deselect previous frame
         if not self.selectedFrame == None:
-            self.changeFrameColor(self.selectedFrame, ACTIVEBG)
+            self.changeFrameColor(self.selectedFrame, FLBG)
             self.checkbox.pack_forget()
 
         #If clicked on already selected frame, set selected frame to None
@@ -535,3 +539,196 @@ class FruitSelector(ScrolledFrame):
 
 
 
+class InventoryManager(tk.Toplevel):
+    def __init__(self, master, inventoryColumns=10,**kw):
+        super().__init__(master=master, **kw)
+
+        #Configure window
+        self.config(bg=BG)
+
+        self.iconbitmap("assets/kitsune.ico")
+        self.title("Manage inventory")
+
+        self.fruitLabels = list()
+        self.removeButtons = list()
+        self.inventoryColumns = inventoryColumns
+        self.fruitSelectorOpen = False
+        self.removeModeEnabled = False
+
+        #Get inventory from config
+        self.inventory = getConfig("INVENTORY")
+        #Deserialize fruit data
+        for i, fruitData in enumerate(self.inventory):
+            self.inventory[i] = fruitFromSerialized(fruitData)
+
+
+        self.rowconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
+
+        #Create frame for inventory
+        self.inventoryFrame = tk.Frame(self, bg=BG)
+        self.inventoryFrame.grid(row=1, column=0)
+
+        #Create label for when inventory is empty
+        self.emptyLabel = tk.Label(self.inventoryFrame, text="Your inventory is empty", font=("Cascadia Code", 24), bg=BG, fg="white", border=0)
+        
+        #Create top bar
+        self.topbar = tk.Frame(self, relief="sunken", borderwidth=2, bg=SBG)
+        self.topbar.grid(row=0, column=0, sticky=tk.W+tk.E)
+
+        self.addFruitButton = tk.Button(self.topbar, bg=BG, activebackground=ACTIVEBG, text="Add Fruit", padx=25, fg="white", command=self.toggleFruitSelector)
+        self.addFruitButton.pack(side=tk.LEFT, padx=5)
+
+        self.removeFruitButton = tk.Button(self.topbar, bg=BG, activebackground=ACTIVEBG, text="Remove Fruit", padx=25, fg="white", command=self.toggleRemoveMode)
+        self.removeFruitButton.pack(side=tk.LEFT, padx=5)
+
+        #Create the fruit selector frame but dont display it
+        self.fruitSelectorFrame = tk.Frame(self, bg=BG, relief="solid", borderwidth=2)
+        
+        self.fruitSelector = FruitSelector(self.fruitSelectorFrame, picWidth=75, picHeight=75, scrollbars="vertical", columns=4, width=400)
+        self.fruitSelector.pack(side=tk.TOP)
+
+        #Configure dummy button
+        self.fruitSelector.button.config(command=self.addFruit)
+
+        self.updateInventoryLabels()
+
+
+    def toggleFruitSelector(self):
+        #Disable remove mod
+        if self.removeModeEnabled:
+            self.toggleRemoveMode()
+
+
+        if not self.fruitSelectorOpen:
+            self.fruitSelectorOpen = True
+            
+            #Deselect any previously selected frame
+            try:
+                self.fruitSelector.changeFrameColor(self.fruitSelector.selectedFrame, ACTIVEBG)
+                self.fruitSelector.checkbox.pack_forget()
+                self.fruitSelector.selectedFrame = None
+            except:
+                #This runs if no frame was previously selected
+                pass
+                
+            self.fruitSelectorFrame.grid(row=1,column=0, sticky=tk.N+tk.W)
+
+        else:
+            self.fruitSelectorOpen = False
+            self.fruitSelectorFrame.grid_forget()
+    
+
+    def toggleRemoveMode(self):
+        #Disable fruit selector
+        if self.fruitSelectorOpen:
+            self.toggleFruitSelector()
+
+        
+        if not self.removeModeEnabled:
+            self.removeModeEnabled = True
+
+            for i, fl in enumerate(self.fruitLabels):
+                #Create button with the corresponding fruit label index as command argument
+                rb = tk.Button(fl, text="X", fg="red", command=lambda i=i:self.removeFruit(i))
+                rb.pack()
+                self.removeButtons.append(rb)
+
+        else:
+            self.removeModeEnabled = False
+            #Delete all remove buttons
+            for rb in self.removeButtons:
+                rb.destroy()
+            self.removeButtons.clear()
+
+
+    def addFruit(self):
+        selectedFruit = self.fruitSelector.getFruit()
+        self.inventory.append(selectedFruit)
+        self.updateInventoryLabels()
+    
+
+    def removeFruit(self, i):
+        fl = self.fruitLabels[i]
+        fl.destroy()
+
+        self.inventory.pop(i)
+
+
+    def clearFruitLabels(self):
+        for fl in self.fruitLabels:
+            fl.destroy()
+        self.fruitLabels.clear()
+
+
+    def updateInventoryLabels(self):
+        if len(self.inventory) == 0:
+            self.clearFruitLabels()
+            self.emptyLabel.grid(row=0, column=0,sticky=tk.W+tk.E)
+
+        else:
+            self.clearFruitLabels()
+            self.emptyLabel.grid_forget()
+
+            for fruit in self.inventory:
+                self.fruitLabels.append(fruitLabel(self.inventoryFrame, fruit.name, permanent=fruit.permanent, usePrice=False))
+
+            for i, fl in enumerate(self.fruitLabels):
+                row, column = divmod(i, self.inventoryColumns)
+                fl.grid(row=row, column=column, padx=7, pady=7)
+
+            self.normalizeLabelSize()
+
+            if self.winfo_reqheight() > self.winfo_height():
+                self.geometry(str(self.winfo_width())+"x"+str(self.winfo_reqheight()))
+    
+
+    def normalizeLabelSize(self):
+        #Figure out fruit label with most width
+        maxWidth = int()
+        for fl in self.fruitLabels:
+            fl.update_idletasks()
+            if fl.winfo_width() > maxWidth:
+                maxWidth = fl.winfo_width()
+
+        #Change all fruit labels to have width of maxWidth
+        for fl in self.fruitLabels:
+            fl.config(padx=(maxWidth-fl.winfo_width())/2)
+
+        #Change height of fruit label based on tallest fruit label in row
+        for i in range(0, len(self.fruitLabels), self.inventoryColumns):
+            rowLabels = self.fruitLabels[i:i+self.inventoryColumns]
+            maxHeight = int()
+
+            #Find tallest label in row
+            for fl in rowLabels:
+                if fl.winfo_height() > maxHeight:
+                    maxHeight = fl.winfo_height()
+            
+            #Configure label height
+            for fl in rowLabels:
+                fl.config(pady=(maxHeight-fl.winfo_height())/2)
+
+
+    def saveInventory(self):
+        serializedFruits = list()
+
+        for fruit in self.inventory:
+            serializedFruits.append(fruit.serialize())
+
+        changeConfig("INVENTORY", serializedFruits)
+
+
+    #Override the destroy method of Toplevel
+    def destroy(self):
+        savedInventory = getConfig("INVENTORY")
+        #Deserialize fruit data
+        for i, fruitData in enumerate(savedInventory):
+            savedInventory[i] = fruitFromSerialized(fruitData)
+
+        if not savedInventory == self.inventory:
+            answer = tkmessagebox.askyesno("Save inventory?", "Do you want to save the changes you made to your inventory?")
+            if answer:
+                self.saveInventory()
+
+        super().destroy()
