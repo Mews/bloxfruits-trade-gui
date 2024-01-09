@@ -7,11 +7,11 @@ from io import BytesIO
 from datetime import datetime, timedelta
 import json
 try:
-    from bloxfruit import bloxfruit
+    from bloxfruit import bloxfruit, fruitFromSerialized
     from value import getFruitValue
     from config import getConfig
 except:
-    from .bloxfruit import bloxfruit
+    from .bloxfruit import bloxfruit, fruitFromSerialized
     from .value import getFruitValue
     from .config import getConfig
 
@@ -43,7 +43,27 @@ class Trade():
         return value
     
     def isValuable(self) -> bool:
-        return self.evaluateHas() > self.evaluateWants()
+        #Get inventory from config
+        inventory = getConfig("INVENTORY")
+        for i, fruitData in enumerate(inventory):
+            inventory[i] = fruitFromSerialized(fruitData)
+
+        wantsInInventory = True
+        hasInInventory = False
+
+        for fruit in self.WANTS:
+            if not fruit in inventory:
+                wantsInInventory = False
+
+        for fruit in self.HAS:
+            if fruit in inventory:
+                hasInInventory = True
+
+
+        if wantsInInventory and not hasInInventory:
+            return self.evaluateHas() > self.evaluateWants()
+        else:
+            return False
     
     def getAutorPfp(self, circle = True) -> Image:
         try:
