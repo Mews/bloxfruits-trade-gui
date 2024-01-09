@@ -190,6 +190,7 @@ class StockFrame(ScrolledFrame):
         #Create Frame inside parent ScrolledFrame
         self.mainFrame = self.display_widget(tk.Frame, fit_width=True)
         self.mainFrame.config(borderwidth=3, background=BG)
+        self.mainFrame.grid_propagate(False)
         self.mainFrame.columnconfigure(0, weight=1, uniform="mainframe")
         self.mainFrame.columnconfigure(1, weight=1, uniform="mainframe")
 
@@ -225,6 +226,9 @@ class StockFrame(ScrolledFrame):
         #Update fruit stock in paralel
         self.startThread()
 
+        #Update main frame height
+        self.after(0, self.updateHeight)
+
         #Start loop again after 5 minutes
         self.after(5*60*1000, self.mainLoop)
 
@@ -242,6 +246,19 @@ class StockFrame(ScrolledFrame):
             self.bindAllToScrollWheel(widget)
         self.bind_scroll_wheel(parent)
 
+
+    def updateHeight(self):
+        #Updates mainFrame height
+        self.mainFrame.grid_propagate(True)
+
+        self.mainFrame.update_idletasks()
+
+        reqHeight = self.mainFrame.winfo_reqheight()
+        if reqHeight < self.winfo_height(): reqHeight = self.winfo_height()-2
+
+        self.mainFrame.grid_propagate(False)
+
+        self.mainFrame.config(height=reqHeight)
     
 #Threading functions
     def worker(self, resultQueues):
@@ -343,6 +360,8 @@ class StockFrame(ScrolledFrame):
             self.lVisible = False
             self.lFrame.grid_forget()
         
+        self.updateHeight()
+
     def toggleBlastStock(self):
         if not self.blVisible:
             self.blVisible = True
@@ -351,6 +370,8 @@ class StockFrame(ScrolledFrame):
         elif self.blVisible:
             self.blVisible = False
             self.blFrame.grid_forget()
+
+        self.updateHeight()
 
 
 
@@ -552,7 +573,7 @@ class InventoryManager(tk.Toplevel):
 
         #Create label for when inventory is empty
         self.emptyLabel = tk.Label(self.inventoryFrame, text="Your inventory is empty", font=("Cascadia Code", 24), bg=BG, fg="white", border=0)
-        
+
         #Create top bar
         self.topbar = tk.Frame(self, relief="sunken", borderwidth=2, bg=SBG)
         self.topbar.grid(row=0, column=0, sticky=tk.W+tk.E)
