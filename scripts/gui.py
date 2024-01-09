@@ -9,13 +9,13 @@ import queue
 try:
     from value import getFruitValue
     from bloxfruit import getFruitProperty, readFruitData, bloxfruit, fruitFromSerialized
-    from trade import trade
+    from trade import Trade
     from config import getConfig, changeConfig
     from stock import getFruitStockInParalel, getTimeTillRestock
 except:
     from .value import getFruitValue
     from .bloxfruit import getFruitProperty, readFruitData, bloxfruit, fruitFromSerialized
-    from .trade import trade
+    from .trade import Trade
     from .config import getConfig, changeConfig
     from .stock import getFruitStockInParalel, getTimeTillRestock
 
@@ -97,7 +97,7 @@ def fruitLabel(root,
 
 
 
-def tradeLabel(root, trade:trade, relief = "ridge", font = ("Cascadia Code", 10)) -> tk.Frame:
+def tradeLabel(root, trade:Trade, relief = "ridge", font = ("Cascadia Code", 10)) -> tk.Frame:
     global authorPfp
 
     mainframe = tk.Frame(root, borderwidth=2, relief=relief)
@@ -578,6 +578,10 @@ class InventoryManager(tk.Toplevel):
         self.topbar = tk.Frame(self, relief="sunken", borderwidth=2, bg=SBG)
         self.topbar.grid(row=0, column=0, sticky=tk.W+tk.E)
 
+        #Create label for inventory value
+        self.valueLabel = tk.Label(self.topbar, bg=BG, text="Value: ", anchor=tk.E, fg="white", padx=5, width=25)
+        self.valueLabel.pack(side=tk.RIGHT)
+
         self.addFruitButton = tk.Button(self.topbar, bg=BG, activebackground=ACTIVEBG, text="Add Fruit", padx=25, fg="white", command=self.toggleFruitSelector)
         self.addFruitButton.pack(side=tk.LEFT, padx=5)
 
@@ -594,6 +598,7 @@ class InventoryManager(tk.Toplevel):
         self.fruitSelector.button.config(command=self.addFruit)
 
         self.updateInventoryLabels()
+        self.updateInventoryValue()
 
 
     def toggleFruitSelector(self):
@@ -649,7 +654,10 @@ class InventoryManager(tk.Toplevel):
     def addFruit(self):
         selectedFruit = self.fruitSelector.getFruit()
         self.inventory.append(selectedFruit)
+
         self.updateInventoryLabels()
+
+        self.updateInventoryValue()
     
 
     def removeFruit(self, i):
@@ -662,6 +670,8 @@ class InventoryManager(tk.Toplevel):
         #Update remove button indexes
         for i, fl in enumerate(self.fruitLabels):
             self.removeButtons[i].config(command=lambda i=i:self.removeFruit(i))
+
+        self.updateInventoryValue()
 
 
     def clearFruitLabels(self):
@@ -728,6 +738,14 @@ class InventoryManager(tk.Toplevel):
             serializedFruits.append(fruit.serialize())
 
         changeConfig("INVENTORY", serializedFruits)
+
+    
+    def updateInventoryValue(self):
+        value = int()
+        for fruit in self.inventory:
+            value += fruit.getValue()
+        
+        self.valueLabel.config(text="Value: $"+f'{value:,}')
 
 
     #Override the destroy method of Toplevel
