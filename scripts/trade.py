@@ -18,7 +18,7 @@ except:
 
 URL = getConfig("tradesurl")
 
-class trade():
+class Trade():
     def __init__(self, HAS:list, WANTS:list, author:str, postTime:datetime, authorLink:str, tradeLink:str, authorsrc:str):
         self.HAS = HAS
         self.WANTS = WANTS
@@ -207,7 +207,7 @@ def downloadTradeFeed():
 
             WANTS.append(bloxfruit(fruitName, permanent=fruitPermanent))
 
-        TRADES.append(trade(HAS=HAS, 
+        TRADES.append(Trade(HAS=HAS, 
                             WANTS=WANTS, 
                             author=author, 
                             postTime=postTime, 
@@ -217,7 +217,7 @@ def downloadTradeFeed():
     
     return TRADES
 
-def tradeFromSerialized(serializedData:str) -> trade:
+def tradeFromSerialized(serializedData:str) -> Trade:
     data = json.loads(serializedData)
     
     for atribute in data:
@@ -246,7 +246,7 @@ def tradeFromSerialized(serializedData:str) -> trade:
         elif atribute == "authorLink": authorLink = value
         elif atribute == "authorsrc": authorsrc = value
 
-    return trade(HAS=HAS, WANTS=WANTS, author=author, postTime=postTime, authorLink=authorLink, tradeLink=tradeLink, authorsrc=authorsrc)
+    return Trade(HAS=HAS, WANTS=WANTS, author=author, postTime=postTime, authorLink=authorLink, tradeLink=tradeLink, authorsrc=authorsrc)
 
         
 
