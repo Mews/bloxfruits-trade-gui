@@ -561,6 +561,7 @@ class InventoryManager(tk.Toplevel):
         for i, fruitData in enumerate(self.inventory):
             self.inventory[i] = fruitFromSerialized(fruitData)
 
+        self.inventory.sort(reverse=True)
 
         self.rowconfigure(1, weight=1)
         self.columnconfigure(0, weight=1)
@@ -605,7 +606,7 @@ class InventoryManager(tk.Toplevel):
             
             #Deselect any previously selected frame
             try:
-                self.fruitSelector.changeFrameColor(self.fruitSelector.selectedFrame, ACTIVEBG)
+                self.fruitSelector.changeFrameColor(self.fruitSelector.selectedFrame, FLBG)
                 self.fruitSelector.checkbox.pack_forget()
                 self.fruitSelector.selectedFrame = None
             except:
@@ -641,6 +642,8 @@ class InventoryManager(tk.Toplevel):
                 rb.destroy()
             self.removeButtons.clear()
 
+            self.updateInventoryLabels()
+
 
     def addFruit(self):
         selectedFruit = self.fruitSelector.getFruit()
@@ -651,8 +654,13 @@ class InventoryManager(tk.Toplevel):
     def removeFruit(self, i):
         fl = self.fruitLabels[i]
         fl.destroy()
-
+        self.fruitLabels.pop(i)
         self.inventory.pop(i)
+        self.removeButtons.pop(i)
+
+        #Update remove button indexes
+        for i, fl in enumerate(self.fruitLabels):
+            self.removeButtons[i].config(command=lambda i=i:self.removeFruit(i))
 
 
     def clearFruitLabels(self):
@@ -662,6 +670,8 @@ class InventoryManager(tk.Toplevel):
 
 
     def updateInventoryLabels(self):
+        self.inventory.sort(reverse=True)
+
         if len(self.inventory) == 0:
             self.clearFruitLabels()
             self.emptyLabel.grid(row=0, column=0,sticky=tk.W+tk.E)
