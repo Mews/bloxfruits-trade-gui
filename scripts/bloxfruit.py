@@ -3,8 +3,10 @@ from bs4 import BeautifulSoup
 import json
 try:
     from config import getConfig
+    from value import getFruitValue
 except:
     from .config import getConfig
+    from .value import getFruitValue
 
 FRUITURL = getConfig("fruitdataurl")
 GPURLS = getConfig("gamepassdataurl")
@@ -52,6 +54,11 @@ class bloxfruit():
     def __lt__(self, other):
         return self.price < other.price
     
+    def getValue(self):
+        if self.permanent:
+            return getFruitValue(self.name)*200
+        return getFruitValue(self.name)
+
     def serialize(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
