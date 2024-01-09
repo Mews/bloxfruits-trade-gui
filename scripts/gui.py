@@ -190,7 +190,6 @@ class StockFrame(ScrolledFrame):
         #Create Frame inside parent ScrolledFrame
         self.mainFrame = self.display_widget(tk.Frame, fit_width=True)
         self.mainFrame.config(borderwidth=3, background=BG)
-        self.mainFrame.grid_propagate(False)
         self.mainFrame.columnconfigure(0, weight=1, uniform="mainframe")
         self.mainFrame.columnconfigure(1, weight=1, uniform="mainframe")
 
@@ -199,11 +198,11 @@ class StockFrame(ScrolledFrame):
         self.timeTillRestockLabel.grid(row=0, column=0, sticky=tk.W+tk.E, padx=6, columnspan=2, pady=5)
 
         #Create and place Buttons that toggle last and before last stock
-        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=100, bg=SBG, activebackground=ACTIVEBG, fg="white")
-        self.lButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W)
+        self.lButton = tk.Button(self.mainFrame, text="Toggle Last Stock", command=self.toggleLastStock, padx=15, bg=SBG, activebackground=ACTIVEBG, fg="white")
+        self.lButton.grid(row=100, columnspan=2, column=0, padx=7, pady=0, sticky=tk.W+tk.E)
 
-        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=100, bg=SBG, activebackground=ACTIVEBG, fg="white")
-        self.blButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W)
+        self.blButton = tk.Button(self.mainFrame, text="Toggle Before Last Stock", command=self.toggleBlastStock, padx=15, bg=SBG, activebackground=ACTIVEBG, fg="white")
+        self.blButton.grid(row=102, columnspan=2, column=0, padx=7, pady=(5,0), sticky=tk.W+tk.E)
 
         #Create lFrame and blFrame
         self.lFrame = tk.Frame(self.mainFrame, bg=BG)
@@ -226,9 +225,6 @@ class StockFrame(ScrolledFrame):
         #Update fruit stock in paralel
         self.startThread()
 
-        #Update main frame height
-        self.after(0, self.updateHeight)
-
         #Start loop again after 5 minutes
         self.after(5*60*1000, self.mainLoop)
 
@@ -246,19 +242,6 @@ class StockFrame(ScrolledFrame):
             self.bindAllToScrollWheel(widget)
         self.bind_scroll_wheel(parent)
 
-
-    def updateHeight(self):
-        #Updates mainFrame height
-        self.mainFrame.grid_propagate(True)
-
-        self.mainFrame.update_idletasks()
-
-        reqHeight = self.mainFrame.winfo_reqheight()
-        if reqHeight < self.winfo_height(): reqHeight = self.winfo_height()-2
-
-        self.mainFrame.grid_propagate(False)
-
-        self.mainFrame.config(height=reqHeight)
     
 #Threading functions
     def worker(self, resultQueues):
@@ -359,8 +342,6 @@ class StockFrame(ScrolledFrame):
         elif self.lVisible:
             self.lVisible = False
             self.lFrame.grid_forget()
-    
-        self.updateHeight()
         
     def toggleBlastStock(self):
         if not self.blVisible:
@@ -371,7 +352,6 @@ class StockFrame(ScrolledFrame):
             self.blVisible = False
             self.blFrame.grid_forget()
 
-        self.updateHeight()
 
 
 
